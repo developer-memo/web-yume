@@ -34,8 +34,7 @@ export class SidebarComponent implements OnInit {
       confirmButtonText: 'Si, cerrar sesión!'
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Sesión Cerrada!','Te esperamos pronto.','success');
-        setTimeout(() => { this.authSrv.logoutService(); }, 1000);
+        setTimeout(() => { this.authSrv.logoutService(); Swal.close(); }, 1000);
       }
     });
   }

@@ -46,7 +46,7 @@ export class DetalleClientesComponent implements OnInit {
     this.clienteServ.updateClienteService(this.formEditCliente.value, this.cliente['id_us']).subscribe( (resp:any) =>{
       
       Swal.fire('Bien!', resp.msg, 'success');
-      setTimeout(() => { this.router.navigate(['dashboard/lista-clientes']) }, 2000);
+      setTimeout(() => { this.router.navigate(['dashboard/lista-clientes']); Swal.close(); }, 2000);
 
     }, (err) =>{
       Swal.fire('Error', err.error.msg, 'error');

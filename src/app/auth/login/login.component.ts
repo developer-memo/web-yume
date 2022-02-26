@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit {
     }, (err) =>{
       //En caso de un error
       Swal.fire('Error', err.error.msg, 'error');
+      setTimeout(() => { Swal.close(); }, 2000);
       this.esperando = false;
     })
   }

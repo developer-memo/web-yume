@@ -45,7 +45,7 @@ export class CrearClienteComponent implements OnInit {
     this.clienteServ.crearUsuarioServices(this.formCrearCliente.value).subscribe( (resp:any) =>{
 
       Swal.fire('Bien!', 'cliente creado con éxito', 'success');
-      setTimeout(() => { this.router.navigate(['dashboard/lista-clientes']) }, 2000);
+      setTimeout(() => { this.router.navigate(['dashboard/lista-clientes']); Swal.close(); }, 2000);
 
       
     }, (err) =>{

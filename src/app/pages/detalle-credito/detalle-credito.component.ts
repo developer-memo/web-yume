@@ -55,6 +55,7 @@ export class DetalleCreditoComponent implements OnInit {
 
     }, (err) =>{
       Swal.fire('Advertencia', 'No hay créditos para este cliente.', 'warning');
+      setTimeout(() => { Swal.close(); }, 2000);
       this.creditoActivo = true;
     })
   }
@@ -73,7 +74,7 @@ export class DetalleCreditoComponent implements OnInit {
     this.creditoServ.updateCreditoService(this.formEditCredito.value, this.credito[0].id_cred).subscribe( (resp:any) =>{
 
       Swal.fire('Bien!', resp.msg, 'success');
-      setTimeout(() => { window.location.reload(); }, 2000);
+      setTimeout(() => { window.location.reload(); Swal.close(); }, 2000);
 
     }, (err) =>{
       Swal.fire('Error', err.msg, 'error');

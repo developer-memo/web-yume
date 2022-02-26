@@ -49,7 +49,7 @@ export class DetallePagosComponent implements OnInit {
     this.pagosServ.updatePagosService(this.formEditPago.value, this.pago['id_pag']).subscribe( (resp:any) =>{
 
       Swal.fire('Bien!', resp.msg, 'success');
-      setTimeout(() => { this.router.navigate(['dashboard/detalle-credito', this.pago['id_us']]); }, 2000);
+      setTimeout(() => { this.router.navigate(['dashboard/detalle-credito', this.pago['id_us']]); Swal.close(); }, 2000);
 
     }, (err) =>{
       Swal.fire('Error', err.msg, 'error');

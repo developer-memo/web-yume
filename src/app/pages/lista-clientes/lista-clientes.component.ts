@@ -31,6 +31,7 @@ export class ListaClientesComponent implements OnInit {
       
     }, (err) =>{
       Swal.fire('Error', 'En este momento no es posible cargar los clientes. Inténtelo más tarde.', 'error');
+      setTimeout(() => { Swal.close(); }, 2000);
     })
   }
 

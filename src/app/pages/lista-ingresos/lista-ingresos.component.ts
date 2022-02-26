@@ -77,7 +77,7 @@ export class ListaIngresosComponent implements OnInit {
     this.finanzasServ.insertIngresosService(json).subscribe( (resp:any) =>{
 
       Swal.fire('Bien!', resp.msg, 'success');
-      setTimeout(() => { window.location.reload(); }, 2000);
+      setTimeout(() => { window.location.reload(); Swal.close(); }, 2000);
 
     }, (err) =>{
       Swal.fire('Error', err.error.msg, 'error');
@@ -164,7 +164,7 @@ export class ListaIngresosComponent implements OnInit {
 
         this.finanzasServ.deleteIngresoService(idIngreso).subscribe( (resp:any) =>{
           Swal.fire('Bien!',resp.msg,'success');
-          setTimeout(() => { window.location.reload(); }, 1500);
+          setTimeout(() => { window.location.reload(); Swal.close();  }, 1500);
 
         }, (err) =>{
           Swal.fire('Error!',err.error.msg,'error');
@@ -201,6 +201,7 @@ export class ListaIngresosComponent implements OnInit {
 
     if (this.formFiltroFechas.get('fechaInicio').value >= this.formFiltroFechas.get('fechaFin').value) {
       Swal.fire('Error!', 'Hay un problema con las fechas.','error');
+      setTimeout(() => { Swal.close();  }, 2000);
       return;
     }
 
@@ -213,8 +214,10 @@ export class ListaIngresosComponent implements OnInit {
     }, (err) =>{ 
       if (err.error.error === 'No hay registros.') {
         Swal.fire('Error!', err.error.error,'error');
+        setTimeout(() => { Swal.close();  }, 2000);
       } else{
         Swal.fire('Error!', err.error.msg,'error');
+        setTimeout(() => { Swal.close();  }, 2000);
 
       }
     })

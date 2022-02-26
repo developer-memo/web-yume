@@ -48,7 +48,7 @@ export class CrearPagosComponent implements OnInit {
     this.pagosServ.createPagosService(this.formCrearPagos.value, this.credito[0].id_cred, this.credito[0].id_us ).subscribe( (resp:any) =>{
 
       Swal.fire('Bien!', resp.msg, 'success');
-      setTimeout(() => { this.router.navigate(['dashboard/detalle-credito', this.credito[0].id_us]); }, 2000);
+      setTimeout(() => { this.router.navigate(['dashboard/detalle-credito', this.credito[0].id_us]); Swal.close(); }, 2000);
     }, (err) =>{
       Swal.fire('Error', err.error.msg, 'error');
     })
