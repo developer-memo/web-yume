@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col-12">
+
+    <div *ngIf=" creditoActivo " class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+      <h3 class="text-warning"><i class="fa fa-exclamation-triangle"></i> Advertencia</h3> En este momento el cliente tiene un crédito activo, no se puede crear más créditos hasta finalizar el actual.
+      <br><br>
+      <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+    </div>
+
+    <div *ngIf=" !creditoActivo " class="card">
+      <div class="card-body">
+        <h4 class="card-title">Crear clientes nuevos</h4>
+        <h6 class="card-subtitle">En el siguiente formulario, puede crear clientes.</h6>
+        <form [formGroup]="formCrearCredito" (submit)="crearCredito()" class="form-material m-t-40">
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Monto del crédito</label>
+                <input type="number" formControlName="monto" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('monto')">*Monto requerido.</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Fecha de crédito</label>
+                <input type="date" formControlName="fecha" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('fecha')">*Fecha requerida.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Plazo de crédito</label>
+                <input type="number" formControlName="plazo" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('plazo')">*Plazo requerido.</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Valor cuota</label>
+                <input type="number" formControlName="valorcuota" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('valorcuota')">*Valor cuota requerido.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>Comentario</label>
+                <textarea name="" formControlName="comentario" class="form-control" rows="3"></textarea>
+                <p class="text-danger" *ngIf="campoNoValido('comentario')">*Comentario requerido.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <button type="submit" class="btn waves-effect waves-light btn-rounded btn-info">Crear crédito</button>
+              &nbsp;
+              <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

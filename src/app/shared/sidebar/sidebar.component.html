@@ -1,0 +1,52 @@
+<!-- ============================================================== -->
+<!-- Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->
+<aside class="left-sidebar">
+  <!-- Sidebar scroll-->
+  <div class="scroll-sidebar">
+    <!-- Sidebar navigation-->
+    <nav class="sidebar-nav">
+      <ul id="sidebarnav">
+        <li class="user-profile">
+          <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
+            <img src="../assets/images/users/avatar.png" alt="user" />
+            <span class="hide-menu">{{dataInfoUser[0].nombre_us | slice:0:18 }}{{ (dataInfoUser[0].nombre_us.length > 18)? '...':'' }} </span>
+          </a>
+          <ul aria-expanded="false" class="collapse">
+            <li><a href="javascript:void()">Mi Cuenta </a></li>
+            <li><a href="javascript:void()">Mis Balances</a></li>
+            <li><a class="cursorSidebar" (click)="cerrarSesion()">Cerrar Sesión </a></li>
+          </ul>
+        </li>
+        <li class="nav-devider"></li>
+        <li class="nav-small-cap">PERSONAL</li>
+        <li> <a class="has-arrow waves-effect waves-dark" routerLink="/"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard <span class="label label-rouded label-themecolor pull-right">2</span></span></a>
+        </li>
+        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Zona Clientes</span></a>
+          <ul aria-expanded="false" class="collapse">
+            <li><a routerLink="lista-clientes">Lista clientes</a></li>
+            <li><a routerLink="crear-cliente">Crear cliente</a></li>
+          </ul>
+        </li>
+        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-wallet-giftcard"></i><span class="hide-menu">Zona de Pago</span></a>
+          <ul aria-expanded="false" class="collapse">
+            <li><a routerLink="lista-creditos">Lista de créditos</a></li>
+            <li><a routerLink="lista-pagos">Pagos realizados</a></li>
+          </ul>
+        </li>
+        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-wallet"></i><span class="hide-menu">Finanzas personales</span></a>
+          <ul aria-expanded="false" class="collapse">
+            <li><a routerLink="datos-finanzas">Mis Finanzas</a></li>
+            <li><a routerLink="lista-ingresos">Ingresos</a></li>
+            <li><a routerLink="lista-egresos">Egresos</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <!-- End Sidebar navigation -->
+  </div>
+  <!-- End Sidebar scroll-->
+</aside>
+<!-- ============================================================== -->
+<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->

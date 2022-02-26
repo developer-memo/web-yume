@@ -1,0 +1,193 @@
+<div *ngIf=" egresos.length == 0 " class="row">
+  <div class="col-lg-12">
+    <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+      <h3 class="text-warning"><i class="fa fa-exclamation-triangle"></i> Advertencia</h3> En este momento no hay egresos creados, por favor cree el primero!.
+      <br><br>
+      <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tabla con los ingresos -->
+<div class="row el-element-overlay">
+  <div class="col-md-12">
+    <h4 class="card-title">Información de los egresos</h4>
+    <h6 class="card-subtitle m-b-20 text-muted">A continuación puede ver la lista de los egresos.</h6>
+  </div>
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <!-- Formulario para filtrar por fechas -->
+        <h4 class="card-title">Filtre los egresos por fechas </h4>
+        <span class="spanTotal">Total gastos: {{sumaEgresos | currency: 'USD'}}</span>
+        <form [formGroup]="formFiltroFechas" (submit)="consultarFechasEgresos()" class="form-material m-t-40">
+          <div class="row">
+            <div class="col-lg-5 col-md-5 col-sm-4">
+              <div class="form-group">
+                <label>Fecha inicial</label>
+                <input type="date" formControlName="fechaInicio" class="form-control">
+              </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-4">
+              <div class="form-group">
+                <label>Fecha final</label>
+                <input type="date" formControlName="fechaFin" class="form-control">
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4">
+              <button type="submit" class="btn waves-effect waves-light btn-rounded btn-success m-t-30 m-b-20">Filtrar Egreso</button>
+            </div>
+          </div>
+        </form>
+        <div class="table-responsive">
+          <table class="table color-table success-table">
+            <thead>
+              <tr>
+                <th>Egreso</th>
+                <th>Valor</th>
+                <th>Tipo</th>
+                <th>Comentario</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor=" let egreso of egresos " >
+                <td> {{egreso.id_egre}} </td>
+                <td> {{egreso.valor_egre | currency: 'USD'}} </td>
+                <td *ngIf="egreso.prestamo_egre == 1" ><small class="label label-primary tipoIngre">Prestamo</small></td>
+                    <td *ngIf="egreso.prestamo_egre == 0" ><small class="label label-success tipoIngre">Gastos</small></td>
+                <td> {{egreso.comentario_egre}} </td>
+                <td> {{egreso.fecha_egre | date: 'dd/MM/yyyy'}} </td>
+                <td style="display: flex;">
+                  <span (click)="modalEditarEgreso(egreso)" data-toggle="modal" data-target="#modalEditarEgreso" class="cursor label label-success">Editar</span>
+                  &nbsp;
+                  <span (click)="EliminarEgreso(egreso.id_egre)" class="cursor label label-danger">Eliminar</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <div class="col-lg-12">
+          <button type="button" data-toggle="modal" data-target="#modalCrearEgreso" class="btn waves-effect waves-light btn-rounded btn-info">Crear Egresos</button>
+          &nbsp;
+          <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Modal para crear ingresos -->
+<div class="modal fade bs-example-modal-lg" id="modalCrearEgreso" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Crear egreso</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <form [formGroup]="formCrearEgreso" (submit)="crearEgreso()" class="form-material m-t-40">
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Valor</label>
+                <input type="number" formControlName="valor" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('valor')">*Valor requerido.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>Comentario</label>
+                <textarea name="" formControlName="comentario" class="form-control" rows="2"></textarea>
+                <p class="text-danger" *ngIf="campoNoValido('comentario')">*Comentario requerido.</p>
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="demo-checkbox">
+                  <input type="checkbox" formControlName="prestamo" id="md_checkbox_31" class="filled-in chk-col-light-green">
+                  <label for="md_checkbox_31">¿Inicio de prestamo? <small class="text-muted">Seleccione este campo si el egreso es para iniciar un prestamo. </small></label>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn waves-effect waves-light btn-rounded btn-info">Crear Egreso</button>
+        &nbsp;
+        <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal para editar egresos -->
+<div class="modal fade bs-example-modal-lg" id="modalEditarEgreso" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar egreso</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <form [formGroup]="formEditarEgreso" (submit)="editarEgresoById()" class="form-material m-t-40">
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Valor pago</label>
+                <input type="number" formControlName="valor" class="form-control">
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Fecha</label>
+                <input type="date" formControlName="fecha" class="form-control">
+                <input type="hidden" formControlName="idEgreso" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>Comentario</label>
+                <textarea name="" formControlName="comentario" class="form-control" rows="2"></textarea>
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="demo-checkbox">
+                  <input type="checkbox" formControlName="prestamo" id="md_checkbox_32" class="filled-in chk-col-light-green">
+                  <label for="md_checkbox_32">¿Inicio de prestamo? <small class="text-muted">Seleccione este campo si el egreso es para iniciar un prestamo. </small></label>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" [disabled]="formEditarEgreso.invalid" class="btn waves-effect waves-light btn-rounded btn-info">Editar Egreso</button>
+        &nbsp;
+        <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,193 @@
+<div *ngIf=" ingresos.length == 0 " class="row">
+  <div class="col-lg-12">
+    <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+      <h3 class="text-warning"><i class="fa fa-exclamation-triangle"></i> Advertencia</h3> En este momento no hay ingresos creados, por favor cree el primero!.
+      <br><br>
+      <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tabla con los ingresos -->
+<div class="row el-element-overlay">
+  <div class="col-md-12">
+    <h4 class="card-title">Información de los ingresos</h4>
+    <h6 class="card-subtitle m-b-20 text-muted">A continuación puede ver la lista de los ingresos.</h6>
+  </div>
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <!-- Formulario para filtrar por fechas -->
+        <h4 class="card-title">Filtre los ingresos por fechas</h4>
+        <span class="spanTotal">Total ingresos: {{sumaIngresos | currency: 'USD'}}</span>
+        <form [formGroup]="formFiltroFechas" (submit)="consultarFechasIngresos()" class="form-material m-t-40">
+          <div class="row">
+            <div class="col-lg-5 col-md-5 col-sm-4">
+              <div class="form-group">
+                <label>Fecha inicial</label>
+                <input type="date" formControlName="fechaInicio" class="form-control">
+              </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-4">
+              <div class="form-group">
+                <label>Fecha final</label>
+                <input type="date" formControlName="fechaFin" class="form-control">
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4">
+              <button type="submit" class="btn waves-effect waves-light btn-rounded btn-warning m-t-30 m-b-20">Filtrar Ingreso</button>
+            </div>
+          </div>
+        </form>
+        <div class="table-responsive">
+          <table class="table color-table warning-table">
+            <thead>
+              <tr>
+                <th>Ingreso</th>
+                <th>Valor</th>
+                <th>Tipo</th>
+                <th>Comentario</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor=" let ingreso of ingresos " >
+                <td> {{ingreso.id_ingre}}</td>
+                <td> {{ingreso.valor_ingre | currency: 'USD'}} </td>
+                <td *ngIf="ingreso.pago_credito_ingre == 1" ><small class="label label-primary tipoIngre">Crédito</small></td>
+                <td *ngIf="ingreso.pago_credito_ingre == 0" ><small class="label label-warning tipoIngre">Ingreso</small></td>
+                <td> {{ingreso.comentario_ingre}} </td>
+                <td> {{ingreso.fecha_ingre | date: 'dd/MM/yyyy'}} </td>
+                <td style="display: flex;">
+                  <span (click)="modalEditarIngreso(ingreso)" data-toggle="modal" data-target="#modalEditarIngreso" class="cursor label label-success">Editar</span>
+                  &nbsp;
+                  <span (click)="EliminarIngreso(ingreso.id_ingre)" class="cursor label label-danger">Eliminar</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <div class="col-lg-12">
+          <button type="button" data-toggle="modal" data-target="#modalCrearIngreso" class="btn waves-effect waves-light btn-rounded btn-info">Crear Ingresos</button>
+          &nbsp;
+          <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Modal para crear ingresos -->
+<div class="modal fade bs-example-modal-lg" id="modalCrearIngreso" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Crear ingreso</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <form [formGroup]="formCrearIngreso" (submit)="crearIngreso()" class="form-material m-t-40">
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Valor pago</label>
+                <input type="number" formControlName="valor" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('valor')">*Valor requerido.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>Comentario</label>
+                <textarea name="" formControlName="comentario" class="form-control" rows="2"></textarea>
+                <p class="text-danger" *ngIf="campoNoValido('comentario')">*Comentario requerido.</p>
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="demo-checkbox">
+                  <input type="checkbox" formControlName="pagoCredito" id="md_checkbox_31" class="filled-in chk-col-light-green">
+                  <label for="md_checkbox_31">¿Pago a crédito? <small class="text-muted">Seleccione este campo si el ingreso es de un pago a un crédito. </small></label>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn waves-effect waves-light btn-rounded btn-info">Crear Ingreso</button>
+        &nbsp;
+        <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal para editar ingresos -->
+<div class="modal fade bs-example-modal-lg" id="modalEditarIngreso" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar ingreso</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <form [formGroup]="formEditarIngreso" (submit)="editarIngresoById()" class="form-material m-t-40">
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Valor pago</label>
+                <input type="number" formControlName="valor" class="form-control">
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Fecha</label>
+                <input type="date" formControlName="fecha" class="form-control">
+                <input type="hidden" formControlName="idIngreso" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>Comentario</label>
+                <textarea name="" formControlName="comentario" class="form-control" rows="2"></textarea>
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="demo-checkbox">
+                  <input type="checkbox" formControlName="pagoCredito" id="md_checkbox_32" class="filled-in chk-col-light-green">
+                  <label for="md_checkbox_32">¿Pago a crédito? <small class="text-muted">Seleccione este campo si el ingreso es de un pago a un crédito. </small></label>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" [disabled]="formEditarIngreso.invalid" class="btn waves-effect waves-light btn-rounded btn-info">Editar Ingreso</button>
+        &nbsp;
+        <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>

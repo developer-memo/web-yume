@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Mi Perfil de usuario</h4>
+        <h6 class="card-subtitle">Ajustes</h6>
+
+        <form class="form p-t-20" [formGroup]="perfilForm" (submit)="actualizarPerfil()">
+          <div class="form-group">
+            <label for="exampleInputuname">Nombre</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-user"></i></div>
+              <input type="text" class="form-control" formControlName="nombre" id="exampleInputuname" placeholder="Nombre de usuario">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">E-mail</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-email"></i></div>
+              <input type="email" class="form-control" formControlName="email" id="exampleInputEmail1" placeholder="E-mail" disabled>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <input type="hidden" class="form-control" formControlName="role">
+            </div>
+          </div>
+        
+          <button type="submit" [disabled]="perfilForm.invalid" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Actualizar</button>
+          <button type="button" routerLink="/" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Avatar</h4>
+        <h6 class="card-subtitle">Imagen del usuario</h6>
+        <img src="" alt="">
+        <input type="file" name="avatar" id="" (change)="cambiarImagen($event.target.files[0])">
+        <br><br>
+        <button type="button" [disabled]="!imgSubir" (click)="subirAvatar()" class="btn btn-success btn-block waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Actualizar</button>
+
+
+      </div>
+    </div>
+  </div>    
+
+</div>

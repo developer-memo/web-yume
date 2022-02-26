@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Crear clientes nuevos</h4>
+        <h6 class="card-subtitle">En el siguiente formulario, puede crear clientes.</h6>
+        <form [formGroup]="formCrearCliente" (submit)="crearCliente()" class="form-material m-t-40">
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Nombre completo</label>
+                <input type="text" formControlName="nombre" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('nombre')">*Nombre requerido.</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Correo electrónico</label>
+                <input type="email" formControlName="email" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('email')">*E-mail requerido.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4 col-md-4">
+              <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" formControlName="direccion" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('direccion')">*Dirección requerida.</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="number" formControlName="telefono" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('telefono')">*Teléfono requerido.</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <div class="form-group">
+                <label>Género</label>
+                <select formControlName="genero" class="form-control">
+                  <option value="M" >Masculino</option>
+                  <option value="F" >Femenino</option>
+                </select>
+                <p class="text-danger" *ngIf="campoNoValido('genero')">*Género requerido.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <button type="submit" class="btn waves-effect waves-light btn-rounded btn-info">Crear cliente</button>
+              &nbsp;
+              <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
