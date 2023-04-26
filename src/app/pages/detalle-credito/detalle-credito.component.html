@@ -1,0 +1,197 @@
+<div *ngIf=" creditoActivo " class="row">
+  <div class="col-lg-12">
+    <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+      <h3 class="text-warning"><i class="fa fa-exclamation-triangle"></i> Advertencia</h3> En este momento el cliente tiene un créditos creados, Por favor ingrese al detalle del cliente y cree el primero.
+      <br><br>
+      <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf=" !creditoActivo " class="row el-element-overlay">
+  <div class="col-md-12">
+    <h4 class="card-title">Información del crédito</h4>
+    <h6 class="card-subtitle m-b-20 text-muted">A continuación puede ver toda la información del crédito y actualizar los datos.</h6>
+  </div>
+  <div class="col-lg-12">
+    <div class="card">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs profile-tab" role="tablist">
+        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#credito" role="tab" aria-expanded="true">Crédito</a> </li>
+        <li class="nav-item"> <a class="nav-link" (click)="cargarEditFormulario()" data-toggle="tab" href="#settings" role="tab" aria-expanded="false">Configuración</a> </li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane active" id="credito" role="tabpanel" aria-expanded="true">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 col-xs-6 b-r"> <strong>ID Crédito</strong>
+                <br>
+                <p class="text-muted">{{credito[0]?.id_cred }}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Cliente</strong>
+                <br>
+                <p class="text-muted">{{credito[0]?.nombre_us}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Teléfono</strong>
+                <br>
+                <p class="text-muted">{{credito[0]?.telefono_us}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6"> <strong>Estado crédito</strong>
+                <br>
+                <p *ngIf=" credito[0]?.estado_cred == 1 " class="text-muted text-warning">ABIERTO</p>
+                <p *ngIf=" credito[0]?.estado_cred == 0 " class="text-muted text-danger">PAGADO</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Monto crédito </small>
+                <h6>{{ credito[0]?.monto_cred | currency: 'USD' : 'symbol' : '1.0-0' }}</h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Fecha crédito </small>
+                <h6>{{ credito[0]?.fecha_cred | date: 'dd/MM/yyyy' }}</h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Plazo crédito </small>
+                <h6>{{ credito[0]?.plazo_cred }} Pagos</h6>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Valor cuota </small>
+                <h6>{{ credito[0]?.valorcuota_cred | currency: 'USD' : 'symbol' : '1.0-0' }}</h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Cuotas pagadas </small>
+                <h6> {{pagos.length}} </h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Total pagado </small>
+                <h6> {{totalPagado | currency: 'USD' : 'symbol' : '1.0-0'}} </h6>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-8">
+                <small class="text-muted">Comentario </small>
+                <h6>{{ credito[0]?.comentario_cred }}</h6>
+              </div>
+            </div>
+
+            <br><br>
+            <div class="contBtn">
+              <button *ngIf=" credito[0]?.estado_cred == 1 " type="button" (click)="navegarCrearPago(credito)" class="btn waves-effect waves-light btn-rounded btn-info">Crear pago</button>
+              &nbsp;
+              <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="settings" role="tabpanel" aria-expanded="false">
+          <div class="card-body">
+            <form [formGroup]="formEditCredito" (submit)="editarCredito()" class="form-material m-t-40">
+
+              <div class="row">
+                <div class="col-lg-6 col-md-6">
+                  <div class="form-group">
+                    <label>Monto del crédito</label>
+                    <input type="number" formControlName="monto" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('monto')">*Monto requerido.</p>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                  <div class="form-group">
+                    <label>Fecha de crédito ({{credito[0]?.fecha_cred | date: 'dd/MM/yyyy'}})</label>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="row">
+                <div class="col-lg-6 col-md-6">
+                  <div class="form-group">
+                    <label>Plazo de crédito</label>
+                    <input type="number" formControlName="plazo" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('plazo')">*Plazo requerido.</p>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                  <div class="form-group">
+                    <label>Valor cuota</label>
+                    <input type="number" formControlName="valorcuota" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('valorcuota')">*Valor cuota requerido.</p>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="row">
+                <div class="col-lg-8 col-md-8">
+                  <div class="form-group">
+                    <label>Comentario</label>
+                    <textarea name="" formControlName="comentario" class="form-control" rows="2"></textarea>
+                    <p class="text-danger" *ngIf="campoNoValido('comentario')">*Comentario requerido.</p>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                  <div class="form-group">
+                    <div class="demo-checkbox">
+                      <input type="checkbox" formControlName="estado" id="md_checkbox_31" class="filled-in chk-col-light-green">
+                      <label for="md_checkbox_31">Crédito activo <small class="text-muted">Puede inactivar el crédito si es pagado totalmente. </small></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="row">
+                <div class="col-lg-12">
+                  <button type="submit" class="btn waves-effect waves-light btn-rounded btn-info">Actualizar crédito</button>
+                  &nbsp;
+                  <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+                </div>
+              </div>
+    
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tabla con los pagos registrados -->
+<div *ngIf="pagos.length > 0" class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Pagos registrados al crédito <strong> {{credito[0]?.id_cred }} </strong></h4>
+        <h6 class="card-subtitle">Registro de todos los pagos realizados de {{credito[0]?.nombre_us}} </h6>
+        <div class="table-responsive">
+          <table class="table color-table warning-table">
+            <thead>
+                <tr>
+                    <th># Pago</th>
+                    <th>Valor Pagado</th>
+                    <th>Cliente</th>
+                    <th>Fecha Pago</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor=" let pago of pagos " >
+                    <td> {{pago.id_pag}} </td>
+                    <td> {{pago.valor_pag | currency: 'USD' : 'symbol' : '1.0-0'}} </td>
+                    <td> {{pago.nombre_us}} </td>
+                    <td> {{pago.fecha_pag | date: 'dd/MM/yyyy'}} </td>
+                    <td><span (click)="navegarVerPagos(pago)" class="cursor label label-info">Ver pago</span></td>
+                </tr>
+                
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

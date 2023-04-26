@@ -1,0 +1,41 @@
+.form-group-img {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+}
+.input-img {
+  width: 50%;
+}
+
+.img-tmp {
+  width: 70px;
+  height: 70px;
+  overflow: hidden;
+}
+.img-tmp img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bg-logo {
+  background-image: url('../../../../assets/images/icon/upload-img.png');
+  width: 70px;
+  height: 70px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.cont-multi-select {
+  border-bottom: 1px solid #e9edf2;
+}
+::ng-deep.multiselect-dropdown .dropdown-btn {
+  border: 0 !important;
+}
+
+@media( min-width:575px ){
+  form.btn-danger {
+    margin-top: 30px;
+  }
+}

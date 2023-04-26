@@ -1,0 +1,102 @@
+<div *ngIf="egreso" class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Editar egreso</h4>
+        <h6 class="card-subtitle">En el siguiente formulario, puede editar el egreso <strong>{{idEgre}}</strong>.</h6>
+        <form [formGroup]="formEditEgre" (submit)="submitEditEgreso()" class="form-material m-t-40">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-6 col-md-6">
+                <div class="form-group">
+                  <label>Valor egreso</label>
+                  <input type="text" formControlName="valor" class="form-control">
+                  <p class="text-danger" *ngIf="campoNoValido('valor')">*Valor requerido. Debe ingresar los detalles del egreso</p>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                <div class="cont-multi-select">
+                  <label>Tipo egreso</label>
+                  <ng-multiselect-dropdown
+                  [settings]="dropdownSettings"
+                  [data]="dropdownList"
+                  (onSelect)="onTypeIngreSelect($event)"
+                  formControlName="tipoTmp"
+                  class="form-control">
+                  </ng-multiselect-dropdown>
+                  <p class="text-danger" *ngIf="campoNoValido('tipoTmp')">*Tipo requerido.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-lg-6 col-md-6">
+                <div class="form-group">
+                  <label>Comentario</label>
+                  <textarea name="" formControlName="comentario" class="form-control" rows="2"></textarea>
+                  <p class="text-danger" *ngIf="campoNoValido('comentario')">*Comentario requerido.</p>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                <div class="form-group">
+                  <label>Fecha</label>
+                  <input type="date" formControlName="fecha" class="form-control">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12">
+                <h6 class="card-subtitle">Agrega con más detalle los conceptos de este egreso.</h6>
+              </div>
+            </div>
+            <!-- Array de campos detalle -->
+            <div formArrayName="detallesTmp" class="">
+              <div class="row" *ngFor="let item of getDetalles.controls; let i = index" [formGroupName]="i" >
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  <div class="form-group">
+                    <label>Detalle</label>
+                    <input type="text" formControlName="detalle" class="form-control">
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                  <div class="form-group">
+                    <label>Valor detalle</label>
+                    <input (ngModelChange)="addAmountValue()" type="number" formControlName="valorDet" class="form-control">
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                  <button type="button" class="btn waves-effect waves-light btn-danger" (click)="removeDetalle(i)"><i class="ti-trash"></i></button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12 pt-2">
+                  <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" (click)="addDetalle()">Agregar otro detalle</button>
+                </div>
+              </div>
+            </div>
+
+            <br>
+            <br>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <div class="demo-checkbox">
+                    <input type="checkbox" formControlName="prestamo" id="md_checkbox_32" class="filled-in chk-col-light-green">
+                    <label for="md_checkbox_32">¿Inicio de prestamo? <small class="text-muted">Seleccione este campo si el egreso es para iniciar un prestamo. </small></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="">
+            <button type="submit" class="btn waves-effect waves-light btn-rounded btn-success">Editar Egreso</button>
+            &nbsp;
+            <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

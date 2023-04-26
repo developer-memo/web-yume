@@ -1,0 +1,95 @@
+<!-- <div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Crear nuevos proyectos</h4>
+        <h6 class="card-subtitle">En el siguiente formulario puede crear proyectos los cuales se verán en la página <a href="https://gtsoftweb.com/" target="_blank">gtsoftweb.com</a></h6>
+        <form [formGroup]="formCrearProyecto" (submit)="crearProyecto()" class="form-material m-t-40">
+          
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Nombre completo</label>
+                <input type="text" formControlName="nombre" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('nombre')">*Nombre requerido.</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Imagen</label>
+                <div class="form-group-img">
+                  <input 
+                  type="file" 
+                  formControlName="imagenTmp" 
+                  class="input-img" 
+                  accept="image/jpg, image/jpeg, image/png" 
+                  (change)="getImagen($event.target.files[0])" >
+                  <input type="text" formControlName="imagen" hidden>
+                  <div class="img-tmp">
+                    <img src="/assets/images/icon/upload-img.png" alt="">
+                  </div>
+                </div>
+                <p class="text-danger" *ngIf="campoNoValido('imagenTmp')">*Imagen requerida.</p>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4 col-md-4">
+              <div class="form-group">
+                <label>Sitio de ubicación(Url)</label>
+                <input type="url" formControlName="sitio" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('sitio')">*Sitio requerido.</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <div class="form-group">
+                <label>Tipo de proyecto</label>
+                <select formControlName="tipo" class="form-control">
+                  <option value="">Seleccione un tipo...</option>
+                  <option *ngFor="let pro of dataTypeProject" [value]="pro.key" >
+                    {{pro.name}}
+                  </option>
+                </select>
+                <p class="text-danger" *ngIf="campoNoValido('tipo')">*Tipo de proyecto requerido.</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+              <div class="cont-multi-select">
+                <label>Skills</label>
+                <ng-multiselect-dropdown
+                [settings]="dropdownSettings"
+                [data]="dropdownList"
+                (onSelect)="onTypeIngreSelect($event)"
+                formControlName="skillsTmp"
+                class="form-control">
+                </ng-multiselect-dropdown>
+                <p class="text-danger" *ngIf="campoNoValido('skillsTmp')">*Skills requerido.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>Descripción</label>
+                <textarea formControlName="descripcion" class="form-control" rows="3"></textarea>
+                <p class="text-danger" *ngIf="campoNoValido('descripcion')">*Descripción requerida.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <button type="submit" class="btn waves-effect waves-light btn-rounded btn-info">Crear Proyecto</button>
+              &nbsp;
+              <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->

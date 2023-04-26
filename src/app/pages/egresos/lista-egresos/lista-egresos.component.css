@@ -1,0 +1,53 @@
+.modal-footer{
+  justify-content: start;
+}
+tbody td span{
+  line-height: 19px;
+}
+.spanTotal{
+  position: absolute;
+  font-size: 13px;
+  right: 29px;
+  top: 15px;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0 0 0 0 transparent !important;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td div, th div  {
+  width: 100px;
+  margin: 0 20px;
+}
+
+.td-actions {
+  display: flex;
+  width: 160px;
+  margin-left: 25px;
+}
+.td-actions span {
+  line-height: 19px;
+}
+
+
+/*================================================*/
+/*============ RESPONSIVE MÓVIL  =================*/
+
+@media screen and (max-width: 520px) {
+  .spanTotal{
+    position: relative;
+    font-size: 14px;
+    right: 0;
+    top: 0;
+  }
+}

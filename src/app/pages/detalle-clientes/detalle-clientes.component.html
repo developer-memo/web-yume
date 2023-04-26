@@ -1,0 +1,151 @@
+<div *ngIf="cliente" class="row">
+  <!-- Column -->
+  <div class="col-lg-4 col-xlg-3 col-md-5">
+    <div class="card"> <img class="card-img" src="../assets/images/background/fondoPerfil.jpg" alt="Card image">
+      <div class="card-img-overlay card-inverse social-profile d-flex text-center justify-content-center">
+        <div class="align-self-center">
+          <div>
+            <img *ngIf="cliente.avatar; else noAvatar" src="https://files.gtsoftweb.com/images/{{cliente.avatar}}" class="img-circle" width="100">
+          </div>
+          <ng-template #noAvatar>
+            <img *ngIf=" cliente.genero === 'M' " src="../assets/images/hombre.png" class="img-circle" width="100">
+            <img *ngIf=" cliente.genero === 'F' " src="../assets/images/mujer.png" class="img-circle" width="100">
+          </ng-template>
+          <h4 class="card-title">{{cliente.nombre}}</h4>
+          <h6 class="card-subtitle">{{cliente.email}}</h6>
+          <p class="text-white">Prestamo del cliente </p>
+          <span *ngIf="cliente.estado === 1" class="label label-warning label-rounded">Activo</span>
+          <span *ngIf="cliente.estado === 0" class="label label-danger label-rounded">Inactivo</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <small class="text-muted">Correo electrónico </small>
+        <h6>{{cliente.email}}</h6> 
+        <small class="text-muted p-t-30 db">Teléfono</small>
+        <h6>{{cliente.telefono}}</h6> 
+        <small class="text-muted p-t-30 db">Dirección</small>
+        <h6>{{cliente.direccion}}</h6>
+        <div class="map-box">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d470029.1604841957!2d72.29955005258641!3d23.019996818380896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1493204785508" width="100%" height="150" frameborder="0" style="border:0" allowfullscreen=""></iframe>
+        </div> <small class="text-muted p-t-30 db">Social Profile</small>
+        <br>
+        <button class="btn btn-circle btn-secondary"><i class="fa fa-facebook"></i></button>
+        <button class="btn btn-circle btn-secondary"><i class="fa fa-twitter"></i></button>
+        <button class="btn btn-circle btn-secondary"><i class="fa fa-youtube"></i></button>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="col-lg-8 col-xlg-9 col-md-7">
+    <div class="card">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs profile-tab" role="tablist">
+        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#profile" role="tab" aria-expanded="true">Perfil</a> </li>
+        <li class="nav-item"> <a class="nav-link" (click)="cargarEditFormulario(cliente)" data-toggle="tab" href="#settings" role="tab" aria-expanded="false">Configuración</a> </li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane active" id="profile" role="tabpanel" aria-expanded="true">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Nombre</strong>
+                <br>
+                <p class="text-muted">{{cliente.nombre}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Teléfono</strong>
+                <br>
+                <p class="text-muted">{{cliente.telefono}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Email</strong>
+                <br>
+                <p class="text-muted">{{cliente.email}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6"> <strong>Dirección</strong>
+                <br>
+                <p class="text-muted">{{cliente.direccion}}</p>
+              </div>
+            </div>
+            <hr>
+            <p class="m-t-30">El usuario {{cliente.nombre}} tiene un crédito activo en YuMe, a continuación puede configurar su cuenta, crear créditos y pagos.</p>
+            <div class="contBtn">
+              <button type="button" (click)="navegarCrearCredito(cliente.id)" class="btn waves-effect waves-light btn-rounded btn-info">Crear crédito</button>
+              &nbsp;
+              <button type="button" (click)="navegarVerCredito(cliente.id)" class="btn waves-effect waves-light btn-rounded btn-warning">Ver crédito</button>
+              &nbsp;
+              <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="settings" role="tabpanel" aria-expanded="false">
+          <div class="card-body">
+            <form [formGroup]="formEditCliente" (submit)="actualizarCliente()" class="form-horizontal form-material">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label>Nombre completo</label>
+                    <input type="text" formControlName="nombre" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('nombre')">*Nombre requerido.</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" formControlName="email" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('email')">*E-mail requerido.</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label>Dirección</label>
+                    <input type="text" formControlName="direccion" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('direccion')">*Dirección requerida.</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="number" formControlName="telefono" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('telefono')">*Teléfono requerido.</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label>Género</label>
+                    <select formControlName="genero" class="form-control">
+                      <option value="M" >Masculino</option>
+                      <option value="F" >Femenino</option>
+                    </select>
+                    <p class="text-danger" *ngIf="campoNoValido('genero')">*Género requerido.</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <div class="demo-checkbox">
+                      <input type="checkbox" formControlName="estado" id="md_checkbox_31" class="filled-in chk-col-light-green">
+                      <label for="md_checkbox_31">Cliente activo <small class="text-muted">Puede inactivar el cliente si cancela el crédito. </small></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <button type="submit" class="btn waves-effect waves-light btn-rounded btn-info">Actualizar cliente</button>
+                  &nbsp;
+                  <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

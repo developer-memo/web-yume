@@ -1,0 +1,54 @@
+<div class="row el-element-overlay">
+  <div class="col-md-12">
+    <h4 class="card-title">Todos los pagos registrados</h4>
+    <h6 class="card-subtitle m-b-20 text-muted">Puede visualizar la información de cada pago dando click en el ID del pago. </h6>
+  </div>
+
+  <div class="col-lg-6 col-md-6">
+    <div class="card bg-primary text-white">
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="stats">
+            <h1 class="text-white"> {{finanzas[0]?.base_pres_fina | currency: 'USD' : 'symbol' : '1.0-0'}} </h1>
+            <h6 class="text-white">Base prestamos</h6>
+            <button routerLink="/dashboard/lista-creditos" class="btn btn-rounded btn-outline btn-light m-t-10 font-14">Ver créditos</button>
+          </div>
+          <div class="stats-icon text-right ml-auto"><i class="fa fa-dollar display-5 op-3 text-dark"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-6">
+    <div class="card bg-success text-white">
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="stats">
+            <h1 class="text-white"> {{totalPagos | currency: 'USD' : 'symbol' : '1.0-0'}} </h1>
+            <h6 class="text-white">Total en pagos</h6>
+            <button routerLink="/dashboard/lista-creditos" class="btn btn-rounded btn-outline btn-light m-t-10 font-14">Ver créditos</button>
+          </div>
+          <div class="stats-icon text-right ml-auto"><i class="fa fa-money display-5 op-3 text-dark"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngFor=" let pago of pagos " class="col-lg-4 col-md-6">
+    <div class="ribbon-wrapper card">
+      <div (click)="navegarVerCredito(pago.id_us)" *ngIf=" pago.estado_cred == 1 " class="cursor ribbon ribbon-success">{{pago.id_cred}}</div>
+      <div (click)="navegarVerCredito(pago.id_us)" *ngIf=" pago.estado_cred == 0 " class="cursor ribbon ribbon-danger">{{pago.id_cred}}</div>
+      <div class="activity-item">
+        <div class="round m-r-20"><img src="/assets/images/pay.png" alt="user" width="50"></div>
+        <div class="m-t-10">
+          <h5 class="m-b-0 font-medium">{{pago.valor_pag | currency: 'USD' : 'symbol' : '1.0-0' }} <span class="text-muted font-14 m-l-10">| &nbsp; {{pago.fecha_pag | date: 'dd/MM/yyyy' }} </span></h5>
+          <h6 class="text-muted"> {{pago.nombre_us}} &nbsp;
+            <span *ngIf=" pago.estado_cred == 1 " class="label label-success">Crédito Abierto</span>
+            <span *ngIf=" pago.estado_cred == 0 " class="label label-danger">Crédito Pagado</span>
+          </h6>
+        </div>
+      </div>
+      <p class="ribbon-content"> {{pago.comentario_pag}} </p>
+    </div>
+  </div>
+</div>

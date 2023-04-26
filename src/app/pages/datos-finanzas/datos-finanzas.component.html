@@ -1,0 +1,107 @@
+<div class="row el-element-overlay">
+  <div class="col-md-12">
+    <h4 class="card-title">Información de mis Finanzas</h4>
+    <h6 class="card-subtitle m-b-20 text-muted">A continuación puede ver toda la información de las finanzas, actualizar los datos, crear ingresos o egresos.</h6>
+  </div>
+  <div class="col-lg-12">
+    <div class="card">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs profile-tab" role="tablist">
+        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#credito" role="tab" aria-expanded="true">Información</a> </li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane active" id="credito" role="tabpanel" aria-expanded="true">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Perfil</strong>
+                <br>
+                <p *ngIf="finanza.admin_us == 'Y'" class="text-muted text-info">ADMINISTRADOR</p>
+                <p *ngIf="finanza.admin_us == 'N'" class="text-muted">ASOCIADO</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Nombre</strong>
+                <br>
+                <p class="text-muted">{{finanza.nombre_us}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Teléfono</strong>
+                <br>
+                <p class="text-muted">{{finanza.telefono_us}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6"> <strong>Estado cuenta</strong>
+                <br>
+                <p *ngIf=" finanza.estado_us == 1 " class="text-muted text-warning">ACTIVO</p>
+                <p *ngIf=" finanza.estado_us == 0 " class="text-muted text-danger">INACTIVO</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Base financiera </small>
+                <h6>{{ finanza.base_fina | currency: 'USD' : 'symbol' : '1.0-0' }}</h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Fecha inicio </small>
+                <h6>{{ finanza.fecha_fina | date: 'dd/MM/yyyy' }}</h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Base prestamos </small>
+                <h6>{{ finanza.base_pres_fina | currency: 'USD' : 'symbol' : '1.0-0' }}</h6>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-lg-12">
+                <h4 class="card-title text-info">
+                  Finanzas {{nombreMes | titlecase }} {{year}}
+                </h4>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Ingresos </small>
+                <h6>{{ ingresosMes | currency: 'USD' : 'symbol' : '1.0-0' }}</h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Egresos </small>
+                <h6> {{ egresosMes | currency: 'USD' : 'symbol' : '1.0-0' }} </h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Total acumulado </small>
+                <h6 [ngClass]="saldoRojoMes" > {{ totalAcumulaMes | currency: 'USD' : 'symbol' : '1.0-0'}} </h6>
+              </div>
+            </div>
+            <hr>
+
+            <div class="row">
+              <div class="col-lg-12">
+                <h4 class="card-title text-info">
+                  Finanzas generales al {{year}}
+                </h4>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Ingresos totales </small>
+                <h6>{{ valIngresos | currency: 'USD' : 'symbol' : '1.0-0' }}</h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Egresos totales </small>
+                <h6> {{ valEgresos | currency: 'USD' : 'symbol' : '1.0-0' }} </h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Total acumulado general </small>
+                <h6 [ngClass]="saldoRojo" > {{ totalAcumula | currency: 'USD' : 'symbol' : '1.0-0'}} </h6>
+              </div>
+            </div>
+            <br>
+
+            <br><br>
+            <div class="contBtn">
+              <button type="button" routerLink="/dashboard/ingresos" class="btn waves-effect waves-light btn-rounded btn-warning">Ver Ingresos</button>
+              &nbsp;
+              <button type="button" routerLink="/dashboard/egresos" class="btn waves-effect waves-light btn-rounded btn-success">Ver Egresos</button>
+              &nbsp;
+              <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

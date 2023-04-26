@@ -1,0 +1,4 @@
+.sidebar-nav .user-profile > a img {
+  height: 30px;
+  object-fit: cover;
+}

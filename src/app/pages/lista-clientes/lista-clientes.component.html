@@ -1,0 +1,33 @@
+<div class="row el-element-overlay">
+  <div class="col-md-12">
+    <h4 class="card-title">Todos los clientes registrados</h4>
+    <h6 class="card-subtitle m-b-20 text-muted">Puede actualizar la información de cada cliente</h6>
+  </div>
+  <div *ngFor=" let cliente of clientes " class="col-lg-2 col-md-4">
+    <div class="card">
+      <div class="el-card-item">
+        <div class="el-card-avatar el-overlay-1">
+          <div class="cont-img-avatar">
+            <img *ngIf="cliente.avatar; else noAvatar" src="https://files.gtsoftweb.com/images/{{cliente.avatar}}" alt="user">
+          </div>
+          <ng-template #noAvatar>
+            <img *ngIf=" cliente.genero === 'M' " src="/assets/images/hombre.png" alt="user">
+            <img *ngIf=" cliente.genero === 'F' " src="/assets/images/mujer.png" alt="user">
+          </ng-template>
+
+          <div class="el-overlay">
+            <ul class="el-info">
+              <li><a (click)="navegarDetalleCliente(cliente.id)" class="btn default btn-outline"><i class="icon-link"></i></a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="el-card-content">
+          <h3 class="box-title">{{ cliente.nombre }}</h3> 
+          <small *ngIf="cliente.estado === 1" >Crédito <span class="label label-warning label-rounded">Activo</span></small>
+          <small *ngIf="cliente.estado === 0" >Crédito <span class="label label-danger label-rounded">Inactivo</span></small>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

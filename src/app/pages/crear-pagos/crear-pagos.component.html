@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Crear pagos al crédito {{credito[0].id_cred}}</h4>
+        <h6 class="card-subtitle">En el siguiente formulario, puede crear pagos al crédito de {{credito[0].nombre_us}}.</h6>
+        <form [formGroup]="formCrearPagos" (submit)="crearPagos()" class="form-material m-t-40">
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Valor pago</label>
+                <input type="number" formControlName="valor" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('valor')">*Valor requerido.</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Fecha de pago</label>
+                <input type="date" formControlName="fecha" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('fecha')">*Fecha requerida.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>Comentario</label>
+                <textarea name="" formControlName="comentario" class="form-control" rows="2"></textarea>
+                <p class="text-danger" *ngIf="campoNoValido('comentario')">*Comentario requerido.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <button type="submit" class="btn waves-effect waves-light btn-rounded btn-info">Crear pago</button>
+              &nbsp;
+              <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

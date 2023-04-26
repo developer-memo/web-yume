@@ -1,0 +1,198 @@
+<div class="row">
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex no-block">
+          <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="../assets/images/icon/income.png" alt="Income"></div>
+          <div class="align-self-center">
+            <h6 class="text-muted m-t-10 m-b-0">Base Prestamos</h6>
+            <h2 class="m-t-0"> {{finanzas[0]?.base_pres_fina | currency: 'USD' : 'symbol' : '1.0-0'}} </h2></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex no-block">
+          <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="../assets/images/icon/expense.png" alt="Income"></div>
+          <div class="align-self-center">
+            <h6 class="text-muted m-t-10 m-b-0">Total Pagado</h6>
+            <h2 class="m-t-0"> {{totalPagado | currency: 'USD' : 'symbol' : '1.0-0'}} </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex no-block">
+          <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="../assets/images/icon/assets.png" alt="Income"></div>
+          <div class="align-self-center">
+            <h6 class="text-muted m-t-10 m-b-0">Total Pagos</h6>
+            <h2 class="m-t-0"> {{pagos.length}} </h2></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex no-block">
+          <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="../assets/images/icon/staff.png" alt="Income"></div>
+          <div class="align-self-center">
+            <h6 class="text-muted m-t-10 m-b-0">Base Financiera</h6>
+            <h2 class="m-t-0">{{finanzas[0]?.base_fina | currency: 'USD' : 'symbol' : '1.0-0'}}</h2></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6 col-md-6">
+  <app-grafica1  titulo="Movimiento actual" [labels]="lblGrafica1" [Data1]="Data1"></app-grafica1>
+  </div>
+
+  <div class="col-lg-6 col-md-6">
+  <app-grafica2  titulo="Pagos realizados" [meses]="meses" [dataBarra]="DataBarra"></app-grafica2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6 col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex">
+          <div>
+            <h4 class="card-title"><span class="lstick"></span>Todos los clientes</h4>
+          </div>
+        </div>
+        <div class="table-responsive tablaClientes m-t-20">
+          <table class="table vm no-th-brd no-wrap pro-of-month">
+            <thead>
+              <tr>
+                <th colspan="2">Registrado</th>
+                <th>Teléfono</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cliente of clientes">
+                <td *ngIf="cliente.avatar; else noAvatar">
+                  <span class="round round-success"><img src="https://files.gtsoftweb.com/images/{{cliente.avatar}}" alt="user" width="50"></span>
+                </td>
+                <ng-template #noAvatar>
+                  <td *ngIf="cliente.genero == 'M'">
+                    <span class="round round-success"><img src="/assets/images/hombre.png" alt="user" width="50"></span>
+                  </td>
+                  <td *ngIf="cliente.genero == 'F'">
+                    <span class="round round-success"><img src="/assets/images/mujer.png" alt="user" width="50"></span>
+                  </td>
+                </ng-template>
+                <td>
+                  <h6> {{cliente.nombre}} </h6>
+                  <small class="text-muted">Crédito en YuMe</small>
+                </td>
+                <td> {{cliente.telefono}} </td>
+                <td *ngIf="cliente.estado == 1" >
+                  <span class="label label-success label-rounded">Activo</span>
+                </td>
+                <td *ngIf="cliente.estado == 0" >
+                  <span class="label label-danger label-rounded">Inactivo</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- Activity widget find scss into widget folder-->
+  <!-- ============================================================== -->
+  <div class="col-lg-6 col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex">
+          <h4 class="card-title"><span class="lstick"></span>Créditos</h4>
+          <!-- <span class="badge badge-success">9</span> -->
+        </div>
+      </div>
+      <div class="activity-box">
+        <div class="card-body">
+          <!-- Activity item-->
+          <div *ngFor="let credito of creditos" class="activity-item">
+            
+              <div class="round m-r-20"><img src="/assets/images/pay2.png" alt="user" width="50"></div>
+              <div class="m-t-10">
+                <h5 class="m-b-0 font-medium"> {{credito.nombre_us}} <span class="text-muted font-14 m-l-10">| &nbsp; {{credito.fecha_cred | date: 'dd/MM/yyyy'}} </span></h5>
+                <h6 class="text-muted">{{credito.comentario_cred | slice:0:30 }}{{ (credito.comentario_cred.length > 30)? '...':'' }} </h6>
+                <table class="table vm b-0 m-b-0">
+                  <tbody>
+                    <tr>
+                      <td class="m-r-10 b-0"><img class="logoCreditos" src="../assets/images/logo-icon.png" alt="user"></td>
+                      <td class="b-0">
+                        <h5 class="m-b-0 font-medium "> {{credito.monto_cred | currency: 'USD' : 'symbol' : '1.0-0'}} </h5>
+                        <h6> {{credito.plazo_cred}} Pagos</h6>
+                      </td>
+                      <td *ngIf="credito.estado_cred == 1" ><span class="label label-warning label-rounded">Activo</span></td>
+                      <td *ngIf="credito.estado_cred == 0" ><span class="label label-danger label-rounded">Inactivo</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-lg-4">
+    <div class="card bg-info text-white">
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="stats">
+            <h1 class="text-white">3257+</h1>
+            <h6 class="text-white">Twitter Followers</h6>
+            <button class="btn btn-rounded btn-outline btn-light m-t-10 font-14">Check list</button>
+          </div>
+          <div class="stats-icon text-right ml-auto"><i class="fa fa-twitter display-5 op-3 text-dark"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card bg-primary text-white">
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="stats">
+            <h1 class="text-white">6509+</h1>
+            <h6 class="text-white">Facebook Likes</h6>
+            <button class="btn btn-rounded btn-outline btn-light m-t-10 font-14">Check list</button>
+          </div>
+          <div class="stats-icon text-right ml-auto"><i class="fa fa-facebook display-5 op-3 text-dark"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card bg-success text-white">
+      <div class="card-body">
+        <div class="d-flex">
+          <div class="stats">
+            <h1 class="text-white">9062+</h1>
+            <h6 class="text-white">Subscribe</h6>
+            <button class="btn btn-rounded btn-outline btn-light m-t-10 font-14">Check list</button>
+          </div>
+          <div class="stats-icon text-right ml-auto"><i class="fa fa-envelope display-5 op-3 text-dark"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

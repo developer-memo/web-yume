@@ -1,0 +1,181 @@
+<div *ngIf="ingreso" class="row">
+  <!-- Column -->
+  <div class="col-lg-4 col-xlg-3 col-md-5">
+    <div class="card"> <img class="card-img" src="../assets/images/background/fondoPerfil.jpg" alt="Card image">
+      <div class="card-img-overlay card-inverse social-profile d-flex text-center justify-content-center">
+        <div class="align-self-center">
+          <div>
+            <img *ngIf="finanzas.avatar_us; else noAvatar" src="https://files.gtsoftweb.com/images/{{finanzas.avatar_us}}" class="img-circle" width="100">
+          </div>
+          <ng-template #noAvatar>
+            <img *ngIf=" finanzas.genero === 'M' " src="../assets/images/hombre.png" class="img-circle" width="100">
+            <img *ngIf=" finanzas.genero === 'F' " src="../assets/images/mujer.png" class="img-circle" width="100">
+          </ng-template>
+          <h4 class="card-title">{{finanzas.nombre_us}}</h4>
+          <h6 class="card-subtitle">{{finanzas.email_us}}</h6>
+          <p class="text-white">Detalle del ingreso <strong>{{ingreso.id_ingre}}</strong></p>
+          <span *ngIf="finanzas.estado_us === 1" class="label label-warning label-rounded">Activo</span>
+          <span *ngIf="finanzas.estado_us === 0" class="label label-danger label-rounded">Inactivo</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <small class="text-muted">Correo electrónico </small>
+        <h6>{{finanzas.email_us}}</h6> 
+        <small class="text-muted p-t-30 db">Teléfono</small>
+        <h6>{{finanzas.telefono_us}}</h6> 
+        <div class="map-box">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d470029.1604841957!2d72.29955005258641!3d23.019996818380896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C+Gujarat!5e0!3m2!1sen!2sin!4v1493204785508" width="100%" height="150" frameborder="0" style="border:0" allowfullscreen=""></iframe>
+        </div> <small class="text-muted p-t-30 db">Social Profile</small>
+        <br>
+        <button class="btn btn-circle btn-secondary"><i class="fa fa-facebook"></i></button>
+        <button class="btn btn-circle btn-secondary"><i class="fa fa-twitter"></i></button>
+        <button class="btn btn-circle btn-secondary"><i class="fa fa-youtube"></i></button>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="col-lg-8 col-xlg-9 col-md-7">
+    <div class="card">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs profile-tab" role="tablist">
+        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#profile" role="tab" aria-expanded="true">Ingreso</a> </li>
+        <!-- <li class="nav-item"> <a class="nav-link" (click)="cargarEditFormulario(finanzas)" data-toggle="tab" href="#settings" role="tab" aria-expanded="false">Configuración</a> </li> -->
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane active" id="profile" role="tabpanel" aria-expanded="true">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Comentario</strong>
+                <br>
+                <p class="text-muted">{{ingreso.comentario_ingre}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Fecha Ingreso</strong>
+                <br>
+                <p class="text-muted">{{ ingreso.fecha_ingre | date: 'dd/MM/yyyy' }}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Valor ingreso</strong>
+                <br>
+                <p class="text-muted">
+                  {{ingreso.valor_ingre | currency: 'USD' : 'symbol' : '1.0-0'}}
+                </p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Tipo ingreso</strong>
+                <br>
+                <p *ngIf="tipos" class="text-muted">
+                  <span *ngFor="let tipo of tipos" class="label label-info label-rounded mr-2">{{tipo.text_tipo}}</span>
+                </p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-12"> Lista detallada del ingreso <strong>{{ingreso.id_ingre}}</strong>
+                <br>
+                <table *ngIf="detalles" class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Detalle</th>
+                      <th scope="col">Valor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let detalle of detalles; let i = index">
+                      <td>{{i+1}}</td>
+                      <td>{{detalle.detalle}}</td>
+                      <td>{{detalle.valorDet | currency: 'USD' : 'symbol' : '1.0-0'}}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td><strong>Total</strong></td>
+                      <td></td>
+                      <td>
+                        <strong>
+                          {{totalValor | currency: 'USD' : 'symbol' : '1.0-0'}}
+                        </strong>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              
+            </div>
+            <div class="contBtn">
+              <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="settings" role="tabpanel" aria-expanded="false">
+          <div class="card-body">
+            <!-- <form [formGroup]="formEditfinanzas" (submit)="actualizarfinanzas()" class="form-horizontal form-material">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label>nombre_us completo</label>
+                    <input type="text" formControlName="nombre_us" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('nombre_us')">*nombre_us requerido.</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input type="email_us" formControlName="email_us" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('email_us')">*E-mail requerido.</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label>Dirección</label>
+                    <input type="text" formControlName="direccion" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('direccion')">*Dirección requerida.</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="number" formControlName="telefono_us" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('telefono_us')">*Teléfono requerido.</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label>Género</label>
+                    <select formControlName="genero" class="form-control">
+                      <option value="M" >Masculino</option>
+                      <option value="F" >Femenino</option>
+                    </select>
+                    <p class="text-danger" *ngIf="campoNoValido('genero')">*Género requerido.</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <div class="demo-checkbox">
+                      <input type="checkbox" formControlName="estado_us" id="md_checkbox_31" class="filled-in chk-col-light-green">
+                      <label for="md_checkbox_31">finanzas activo <small class="text-muted">Puede inactivar el finanzas si cancela el crédito. </small></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <button type="submit" class="btn waves-effect waves-light btn-rounded btn-info">Actualizar finanzas</button>
+                  &nbsp;
+                  <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+                </div>
+              </div>
+            </form> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

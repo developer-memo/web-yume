@@ -1,0 +1,124 @@
+<div class="row el-element-overlay">
+  <div class="col-md-12">
+    <h4 class="card-title">Información del pago al crédito <strong>{{pago['id_cred']}}</strong> </h4>
+    <h6 class="card-subtitle m-b-20 text-muted">A continuación puede ver toda la información del pago de {{pago['nombre_us']}} y actualizar los datos.</h6>
+  </div>
+  <div class="col-lg-12">
+    <div class="card">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs profile-tab" role="tablist">
+        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#credito" role="tab" aria-expanded="true">Pago</a> </li>
+        <li class="nav-item"> <a class="nav-link" (click)="cargarEditFormulario()" data-toggle="tab" href="#settings" role="tab" aria-expanded="false">Configuración</a> </li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane active" id="credito" role="tabpanel" aria-expanded="true">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3 col-xs-6 b-r"> <strong>ID Pago</strong>
+                <br>
+                <p class="text-muted">{{pago['id_pag'] }}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Cliente</strong>
+                <br>
+                <p class="text-muted">{{pago['nombre_us']}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6 b-r"> <strong>Teléfono</strong>
+                <br>
+                <p class="text-muted">{{pago['telefono_us']}}</p>
+              </div>
+              <div class="col-md-3 col-xs-6"> <strong>Estado crédito</strong>
+                <br>
+                <p *ngIf=" pago['estado_cred'] == 1 " class="text-muted text-warning">ABIERTO</p>
+                <p *ngIf=" pago['estado_cred'] == 0 " class="text-muted text-danger">CANCELADO</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Valor Pagado </small>
+                <h6>{{ pago['valor_pag'] | currency: 'USD' : 'symbol' : '1.0-0' }}</h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Fecha pago </small>
+                <h6>{{ pago['fecha_pag'] | date: 'dd/MM/yyyy' }}</h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Monto crédito </small>
+                <h6>{{ pago['monto_cred'] | currency: 'USD' : 'symbol' : '1.0-0' }}</h6>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-lg-8 col-md-8">
+                <small class="text-muted">Comentario </small>
+                <h6>{{ pago['comentario_pag'] }}</h6>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <small class="text-muted">Plazo crédito </small>
+                <h6>{{ pago['plazo_cred'] }} Pagos</h6>
+              </div>
+            </div>
+
+            <br><br>
+            <div class="contBtn">
+              &nbsp;
+              <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="settings" role="tabpanel" aria-expanded="false">
+          <div class="card-body">
+            <form [formGroup]="formEditPago" (submit)="editarPagos()" class="form-material m-t-40">
+
+              <div class="row">
+                <div class="col-lg-6 col-md-6">
+                  <div class="form-group">
+                    <label>Valor pago</label>
+                    <input type="number" formControlName="valor" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('valor')">*Valor requerido.</p>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                  <div class="form-group">
+                    <label>Fecha pago</label>
+                    <input type="date" formControlName="fecha" class="form-control">
+                    <p class="text-danger" *ngIf="campoNoValido('valor')">*Fecha requerida.</p>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="row">
+                <div class="col-lg-8 col-md-8">
+                  <div class="form-group">
+                    <label>Comentario</label>
+                    <textarea name="" formControlName="comentario" class="form-control" rows="2"></textarea>
+                    <p class="text-danger" *ngIf="campoNoValido('comentario')">*Comentario requerido.</p>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                  <div class="form-group">
+                    <div class="demo-checkbox">
+                      <input type="checkbox" formControlName="estado" id="md_checkbox_31" class="filled-in chk-col-light-green">
+                      <label for="md_checkbox_31">Pago activo <small class="text-muted">Puede inactivar el pago si este no es valido. </small></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+              <div class="row">
+                <div class="col-lg-12">
+                  <button type="submit" class="btn waves-effect waves-light btn-rounded btn-info">Actualizar pago</button>
+                  &nbsp;
+                  <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+                </div>
+              </div>
+    
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

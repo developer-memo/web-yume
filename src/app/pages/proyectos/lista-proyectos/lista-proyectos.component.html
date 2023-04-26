@@ -1,0 +1,195 @@
+<div *ngIf=" allProjects?.length == 0 " class="row">
+  <div class="col-lg-12">
+    <div class="alert alert-warning">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+      <h3 class="text-warning"><i class="fa fa-exclamation-triangle"></i> Advertencia</h3> En este momento no hay proyectos creados, por favor cree el primero!.
+      <br><br>
+      <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tabla con los ingresos -->
+<div class="row el-element-overlay">
+  <div class="col-md-12">
+    <h4 class="card-title">Información de los ingresos</h4>
+    <h6 class="card-subtitle m-b-20 text-muted">A continuación puede ver la lista de los ingresos.</h6>
+  </div>
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource">
+        
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef>No. </th>
+              <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="imagen">
+              <th mat-header-cell *matHeaderCellDef> <div>Imagen</div> </th>
+              <td mat-cell *matCellDef="let element"> 
+                <div class="td-img">
+                  <img src="https://files.gtsoftweb.com/images/{{element.imagen}}" alt="">
+                </div> 
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef> <div>Nombre</div> </th>
+              <td mat-cell *matCellDef="let element"> 
+                <div>{{element.nombre}}</div> 
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="descripcion">
+              <th mat-header-cell *matHeaderCellDef> <div>Descripción</div> </th>
+              <td mat-cell *matCellDef="let element"> 
+                {{element.descripcion | slice:0:70}}{{ (element.descripcion > 70)? '...':'' }}
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="sitio">
+              <th mat-header-cell *matHeaderCellDef> <div>Sitio</div> </th>
+              <td mat-cell *matCellDef="let element">
+                <a href="{{element.sitio}}" target="_blank">
+                  {{element.sitio | slice:0:50}}{{ (element.sitio > 50)? '...':'' }}
+                </a>
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="tipo">
+              <th mat-header-cell *matHeaderCellDef> <div>Tipo</div> </th>
+              <td mat-cell *matCellDef="let element"> 
+                <div>{{ projectsType[element.tipo].name }} </div>
+              </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef> <div style="margin-left: 25px;">Acciones</div> </th>
+              <td mat-cell *matCellDef="let element"> 
+                <div class="td-actions">
+                  <span (click)="modalEditarProyecto(element)" data-toggle="modal" data-target="#modalEditarProyecto" class="cursor label label-success">Editar</span>
+                  <!-- <span (click)="navigateProyecto(element.id)" class="cursor label label-success">Editar</span> -->
+                  &nbsp;
+                  <span (click)="EliminarProyecto(element)" class="cursor label label-danger">Eliminar</span>
+                </div>
+              </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        
+          <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]"
+                         showFirstLastButtons
+                         aria-label="Select page of periodic elements">
+          </mat-paginator>
+        </div>
+        
+        <br>
+        <div class="col-lg-12">
+          <button type="button" routerLink="/dashboard/crear-proyectos" class="btn waves-effect waves-light btn-rounded btn-info">Crear Proyectos</button>
+          &nbsp;
+          <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- *********************************************************************** -->
+
+<!-- Modal para editar proyecto -->
+<div class="modal fade bs-example-modal-lg" id="modalEditarProyecto" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myLargeModalLabel">Editar ingreso</h4>
+        <button id="closeModalEdit" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <form [formGroup]="formEditarProyecto" (submit)="submitProyectoById()" class="form-material m-t-40">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Valor pago</label>
+                <input type="text" formControlName="nombre" class="form-control">
+                <input type="text" formControlName="id" hidden>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Imagen</label>
+                <div class="form-group-img">
+                  <input 
+                    type="file" 
+                    formControlName="imagenTmp" 
+                    class="input-img" 
+                    accept="image/jpg, image/jpeg, image/png" 
+                    (change)="getImagen($event.target.files[0])" >
+                  <input type="text" formControlName="imagen" hidden>
+                  <div class="img-tmp">
+                    <img src="/assets/images/icon/upload-img.png" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>Sitio de ubicación(Url)</label>
+                <input type="url" formControlName="sitio" class="form-control">
+                <p class="text-danger" *ngIf="campoNoValido('sitio')">*Sitio requerido.</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="form-group">
+                <label>Tipo de proyecto</label>
+                <select formControlName="tipo" class="form-control">
+                  <option value="">Seleccione un tipo...</option>
+                  <option *ngFor="let pro of dataTypeProject" [value]="pro.key" >
+                    {{pro.name}}
+                  </option>
+                </select>
+                <p class="text-danger" *ngIf="campoNoValido('tipo')">*Tipo de proyecto requerido.</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <div class="cont-multi-select">
+                <label>Skills</label>
+                <ng-multiselect-dropdown
+                [settings]="dropdownSettings"
+                [data]="dropdownList"
+                (onSelect)="onTypeIngreSelect($event)"
+                formControlName="skillsTmp"
+                class="form-control">
+                </ng-multiselect-dropdown>
+                <p class="text-danger" *ngIf="campoNoValido('skillsTmp')">*Skills requerido.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label>Descripción</label>
+                <textarea formControlName="descripcion" class="form-control" rows="5"></textarea>
+                <p class="text-danger" *ngIf="campoNoValido('descripcion')">*Descripción requerida.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn waves-effect waves-light btn-rounded btn-info">Editar Proyecto</button>
+          &nbsp;
+          <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<form class="form p-t-20" [formGroup]="perfilForm" (submit)="actualizarPerfil()">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Mi Perfil de usuario</h4>
+          <h6>Perfil: 
+            <span *ngIf="dataInfoUser.admin =='Y'" class="label label-warning label-rounded">Administrador</span>
+            <span *ngIf="dataInfoUser.admin !='Y'" class="label label-info label-rounded">Usuario</span>
+          </h6>
+
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="exampleInputuname">Nombre</label>
+                <div class="input-group">
+                  <div class="input-group-addon"><i class="ti-user"></i></div>
+                  <input type="text" class="form-control" formControlName="nombre" id="exampleInputuname" placeholder="Nombre de usuario">
+                  <input type="number" formControlName="id" hidden>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="exampleInputEmail1">E-mail</label>
+                <div class="input-group">
+                  <div class="input-group-addon"><i class="ti-email"></i></div>
+                  <input type="email" class="form-control" formControlName="email" id="exampleInputEmail1" placeholder="E-mail" disabled>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="exampleInputuname">Dirección</label>
+                <div class="input-group">
+                  <div class="input-group-addon"><i class="ti-location-pin"></i></div>
+                  <input type="text" class="form-control" formControlName="direccion" id="exampleInputuname" placeholder="Dirección de usuario">
+                </div>
+              </div><div class="col-md-6 form-group">
+                <label for="exampleInputuname">Teléfono</label>
+                <div class="input-group">
+                  <div class="input-group-addon"><i class="ti-mobile"></i></div>
+                  <input type="text" class="form-control" formControlName="telefono" id="exampleInputuname" placeholder="Teléfono de usuario">
+                </div>
+              </div>
+            </div>
+          
+            <button type="submit" [disabled]="perfilForm.invalid" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Actualizar</button>
+            <button type="button" routerLink="/" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Avatar</h4>
+          <h6 class="card-subtitle">Imagen del usuario</h6>
+          <div class="row">
+            <div class="col-md-7">
+              <input 
+                type="file" 
+                name="imagenTmp"
+                formControlName="imagenTmp"
+                accept="image/jpg, image/jpeg, image/png"
+                (change)="cambiarImagen($event.target.files[0])">
+              <input type="text" formControlName="avatar" hidden>
+            </div>
+            <div class="col-md-5">
+              <div class="img-tmp">
+                <img src="https://files.gtsoftweb.com/images/{{dataInfoUser.avatar}}" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+</form>

@@ -1,0 +1,12 @@
+.cont-multi-select {
+  border-bottom: 1px solid #e9edf2;
+}
+::ng-deep.multiselect-dropdown .dropdown-btn {
+  border: 0 !important;
+}
+
+@media( min-width:575px ){
+  form.btn-danger {
+    margin-top: 30px;
+  }
+}
