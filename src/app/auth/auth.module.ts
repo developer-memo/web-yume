@@ -27,7 +27,7 @@ import { NewPasswordComponent } from './new-password/new-password.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule  
+    HttpClientModule
   ]
 })
 export class AuthModule { }

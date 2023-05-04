@@ -21,28 +21,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public usuario:User;
   public clientes:User[];
   public creditos:any[] = [];
+  public ingresos:any[] = [];
   public pagos:any[] = [];
   public finanzas:any[] = [];
   public totalPagado:number = 0;
-  
+
   //Grafica 1
   public lblGrafica1:string[] = [];
   public Data1:any[] = [];
 
-  //Grafica 2
-  public meses: string[] = ['Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']; 
-  public DataBarra: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Serv. Públicos' },
-    { data: [28, 48, 40, 19, 86, 27, 100], label: 'T. Crédito' },
-    { data: [18, 68, 20, 9, 46, 67, 50], label: 'Otros Pagos' }
-  ];
-
   constructor(
-              private clientesServ: UsuarioService,
-              private creditosServ: CreditosService,
-              private pagosServ: PagosService,
-              private finanzaServ: FinanzasService,
-              private authServ: AuthService,
+    private clientesServ: UsuarioService,
+    private creditosServ: CreditosService,
+    private pagosServ: PagosService,
+    private finanzaServ: FinanzasService,
+    private authServ: AuthService,
   ) { }
 
   ngOnDestroy(): void {
@@ -55,7 +48,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     //Obtenemos los clientes
     this.getAllClientes();
-    
+
     //Obtenemos los créditos
     this.getAllCreditos();
 
@@ -65,9 +58,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     //Obtenemos las finanzas
     this.getFinanzas(this.usuario.id);
 
-    //Cargar la grafica de dona
-    setTimeout(() => { this.cargarGraficaDona() }, 1000);
-    
+    //Cargar las graficas
+    setTimeout(() => { this.cargarGraficas() }, 1000);
+
   }
 
 
@@ -115,6 +108,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
 
+
   /**
    * Método para obtener las finanzas
    */
@@ -126,13 +120,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
 
-
   /**
    * Método para cargar la grafica de dona
    */
-  public cargarGraficaDona = () =>{
+  public cargarGraficas = () =>{
     this.lblGrafica1 = ['Clientes', 'Créditos', 'Pagos'];
     this.Data1 = [ [this.clientes.length, this.creditos.length, this.pagos.length] ];
+    this.getAllIngresosById(this.usuario.id);
   }
+
+
+  /**
+   * Método btener todos los ingresos
+   */
+  getAllIngresosById = (idUs:number) =>{
+    const getIngre$ = this.finanzaServ.getIngresosByIdService(idUs).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
+      this.ingresos = resp.ingresos || [];
+    }, (err) =>{ console.error(err); getIngre$.unsubscribe()})
+  }
+
+
+
+
 
 }

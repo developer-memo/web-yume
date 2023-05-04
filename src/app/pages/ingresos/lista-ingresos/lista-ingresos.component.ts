@@ -38,7 +38,7 @@ export class ListaIngresosComponent implements OnInit, OnDestroy  {
     private router: Router,
     private toastrSvc: ToastrService,
     private paginatorIntl: MatPaginatorIntl,
-  ) { 
+  ) {
     this.paginatorIntl.itemsPerPageLabel = "Registros por página";
   }
 
@@ -49,7 +49,7 @@ export class ListaIngresosComponent implements OnInit, OnDestroy  {
   }
 
   ngOnInit(): void {
-    
+
     this.finanza = JSON.parse(localStorage.getItem('finanzas')) || [];
     this.idUsuario = this.finanza[0].id_us;
     this.getIngresosById(this.idUsuario);
@@ -64,6 +64,7 @@ export class ListaIngresosComponent implements OnInit, OnDestroy  {
   public getIngresosById = (idUs:any) =>{
     const getIngre$ = this.finanzasServ.getIngresosByIdService(idUs).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
       this.ingresos = resp.ingresos || [];
+      console.log(this.ingresos);
       this.initMatTable(this.ingresos);
       this.sumaValores(this.ingresos);
     }, (err) =>{ console.error(err); getIngre$.unsubscribe()})
@@ -111,7 +112,7 @@ export class ListaIngresosComponent implements OnInit, OnDestroy  {
 
 
   /**
-   * Método para ver el detalle del ingreso 
+   * Método para ver el detalle del ingreso
    */
   public viewDetailIngre = (id:string) =>{
     this.router.navigate(['/dashboard/ingresos/detalle-ingreso', id])
@@ -136,7 +137,7 @@ export class ListaIngresosComponent implements OnInit, OnDestroy  {
       this.initMatTable(this.ingresos);
       this.sumaValores(this.ingresos);
       this.isFilterDate = true;
-    }, (err) =>{ 
+    }, (err) =>{
       if (err.error.error === 'No hay registros.') {
         this.toastrSvc.error(`${err.error.error}`, 'Uppsss!');
       } else{

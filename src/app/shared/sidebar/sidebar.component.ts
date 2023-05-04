@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { SharedService } from 'src/app/services/shared.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -10,12 +11,32 @@ import Swal from 'sweetalert2';
 })
 export class SidebarComponent implements OnInit {
 
-  public dataInfoUser:User;
+  dataInfoUser:User;
+  mediaqueryList = window.matchMedia("(max-width: 768px)");
+  btnMenu: HTMLElement;
 
-  constructor( private authSrv: AuthService ) { }
+  constructor(
+    private authSrv: AuthService,
+    private sharedSrv: SharedService,
+    ) { }
 
   ngOnInit(): void {
     this.dataInfoUser = this.authSrv.usuario[0];
+    if(this.mediaqueryList.matches){
+      this.sharedSrv.sendDomHtmlObservable.subscribe( (html:HTMLElement) =>{
+        this.btnMenu = html;
+      })
+    }
+  }
+
+
+  /**
+   * Event click menu mobile only
+   */
+  closeMenu = () =>{
+    if(this.mediaqueryList.matches) {
+      this.btnMenu.click()
+    }
   }
 
 

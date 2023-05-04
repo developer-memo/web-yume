@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { SpinnerService } from 'src/app/services/spinner.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -23,6 +24,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private toastrSvc: ToastrService,
     private authSrv: AuthService,
+    private spinnerSrv: SpinnerService
   ) { }
 
   ngOnDestroy(): void {
@@ -40,13 +42,16 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   public submitReset = () =>{
     if ( this.formResetPassword.invalid ) { return; }
-    
+
     this.awaitResp = true;
     this.emailUser = this.formResetPassword.get('email').value;
+    this.spinnerSrv.show();
     this.authSrv.recoverPassService(this.formResetPassword.value).pipe(takeUntil(this._unsubscribeAll)).subscribe( resp =>{
+      this.spinnerSrv.hide()
       this.txtSuccess = true;
     }, err =>{
       console.log(err);
+      this.spinnerSrv.hide()
       this.toastrSvc.error(`${err.error.msg}`, 'Uppsss!');
     })
     this.formResetPassword.reset();

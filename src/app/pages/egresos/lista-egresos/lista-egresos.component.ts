@@ -39,7 +39,7 @@ export class ListaEgresosComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastrSvc: ToastrService,
     private paginatorIntl: MatPaginatorIntl,
-  ) { 
+  ) {
     this.paginatorIntl.itemsPerPageLabel = "Registros por página";
   }
 
@@ -65,7 +65,7 @@ export class ListaEgresosComponent implements OnInit, OnDestroy {
   public getEgresosById = (idUs:any) =>{
     const getEgre$ = this.finanzasServ.getEgresosByIdService(idUs).pipe(takeUntil(this._unsubscribeAll)).subscribe( async(resp:any) =>{
       this.egresos = await resp.egresos || [];
-      this.initMatTable(this.egresos);    
+      this.initMatTable(this.egresos);
       this.sumaValores(this.egresos);
     }, (err) =>{
       console.log(err);
@@ -104,7 +104,7 @@ export class ListaEgresosComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Método para ver el detalle del egreso 
+   * Método para ver el detalle del egreso
    */
   public viewDetailEgre = (id:string) =>{
     this.router.navigate(['/dashboard/egresos/detalle-egreso', id])
@@ -141,7 +141,7 @@ export class ListaEgresosComponent implements OnInit, OnDestroy {
       this.initMatTable(this.egresos);
       this.sumaValores(this.egresos);
       this.isFilterDate = true;
-    }, (err) =>{ 
+    }, (err) =>{
       if (err.error.error === 'No hay registros.') {
         this.toastrSvc.error(`${err.error.error}`, 'Uppsss!');
       } else{

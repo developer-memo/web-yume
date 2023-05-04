@@ -9,6 +9,7 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
 import { ProyectosService } from 'src/app/services/proyectos.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Router } from '@angular/router';
+import { SpinnerService } from 'src/app/services/spinner.service';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
   public perfilForm: FormGroup;
   public imgUpload: File;
 
-  constructor( 
+  constructor(
       private fb: FormBuilder,
       private projectsSrv: ProyectosService,
       private fileUploadSrv: FileUploadService,
@@ -34,6 +35,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
       private authSrv: AuthService,
       private usuarioSrv: UsuarioService,
       private toastrSvc: ToastrService,
+      private spinnerSrv: SpinnerService,
       private router: Router,
   ) { }
 
@@ -45,7 +47,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.token = localStorage.getItem('token');
     this.dataInfoUser = this.authSrv.usuario[0];
-  
+
     this.perfilForm = this.fb.group({
       id: [this.dataInfoUser.id],
       nombre: [this.dataInfoUser.nombre, [Validators.required, Validators.minLength(6)]],
@@ -61,6 +63,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
    * Método para actualizar el perfil de usuario
    */
   public actualizarPerfil = async() =>{
+    this.spinnerSrv.show()
     if (this.perfilForm.get('imagenTmp').value) {
       this.projectsSrv.deleteImageService(this.perfilForm.get('avatar').value).pipe(takeUntil(this._unsubscribeAll)).subscribe(resp=>{}, err =>{ console.log(err)});
 
@@ -71,13 +74,15 @@ export class PerfilComponent implements OnInit, OnDestroy {
 
     this.usuarioSrv.updateUserService(this.perfilForm.value).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
       this.toastrSvc.success(`${resp.msg}`, 'Bien!');
+      this.spinnerSrv.hide()
       setTimeout(() => { window.location.reload(); }, 1500);
     }, err =>{
       console.log(err);
+      this.spinnerSrv.hide()
       this.toastrSvc.error(`Inténtalo en otro momento...`, 'Uppsss!');
     })
-    
-    
+
+
   }
 
 
@@ -85,7 +90,7 @@ export class PerfilComponent implements OnInit, OnDestroy {
 
   public cambiarImagen = (file:File) =>{
     let imgTmp = this.element.nativeElement.querySelector('.img-tmp img');
-    imgTmp.setAttribute('src', URL.createObjectURL(file))  
+    imgTmp.setAttribute('src', URL.createObjectURL(file))
     this.imgUpload = file;
   }
 

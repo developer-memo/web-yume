@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
@@ -12,14 +13,23 @@ import Swal from 'sweetalert2';
 })
 export class HeaderComponent implements OnInit {
 
-  public dataInfoUser:User;
-  
+  mediaqueryList = window.matchMedia("(max-width: 768px)");
+  dataInfoUser:User;
+  btnMenu: HTMLElement;
 
-  constructor( private authSrv: AuthService ) { }
+  constructor(
+    private authSrv: AuthService,
+    private sharedSrv: SharedService,
+    private element: ElementRef<HTMLElement>,
+  ) { }
 
 
   ngOnInit(): void {
     this.dataInfoUser = this.authSrv.usuario[0];
+    if(this.mediaqueryList.matches) {
+      this.btnMenu = this.element.nativeElement.querySelector('#btn-menu-toggle');
+      this.sharedSrv.sendHtmlService(this.btnMenu);
+    }
   }
 
 
