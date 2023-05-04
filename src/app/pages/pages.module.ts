@@ -33,8 +33,6 @@ import { EditarProyectoComponent } from './proyectos/editar-proyecto/editar-proy
 import { EditarIngresoComponent } from './ingresos/editar-ingreso/editar-ingreso.component';
 import { EditarEgresoComponent } from './egresos/editar-egreso/editar-egreso.component';
 
-
-
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -63,11 +61,8 @@ import { EditarEgresoComponent } from './egresos/editar-egreso/editar-egreso.com
     EditarIngresoComponent,
     EditarEgresoComponent
   ],
-  exports: [
-    DashboardComponent,
-    PagesComponent
-  ],
-  imports: [ 
+  exports: [DashboardComponent, PagesComponent],
+  imports: [
     CommonModule,
     SharedModule,
     RouterModule,
@@ -78,4 +73,4 @@ import { EditarEgresoComponent } from './egresos/editar-egreso/editar-egreso.com
     NgMultiSelectDropDownModule.forRoot()
   ]
 })
-export class PagesModule { }
+export class PagesModule {}

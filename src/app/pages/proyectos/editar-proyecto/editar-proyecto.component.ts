@@ -8,14 +8,11 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './editar-proyecto.component.html',
   styleUrls: ['./editar-proyecto.component.css']
 })
-export class EditarProyectoComponent implements OnInit, OnDestroy  {
-
+export class EditarProyectoComponent implements OnInit, OnDestroy {
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  public idPro:string;
+  public idPro: string;
 
-  constructor(
-    private route: ActivatedRoute,
-  ) { }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next(null);
@@ -23,16 +20,13 @@ export class EditarProyectoComponent implements OnInit, OnDestroy  {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.pipe(takeUntil(this._unsubscribeAll)).subscribe( resp =>{
-      this.idPro = resp.get('id');
-    });
+    this.route.paramMap
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(resp => {
+        this.idPro = resp.get('id');
+      });
     this.getProjectById();
-    
   }
 
-
-  public getProjectById = () =>{
-
-  }
-
+  public getProjectById = () => {};
 }

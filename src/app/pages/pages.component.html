@@ -1,26 +1,24 @@
 <div id="main-wrapper">
-
+  <app-spinner></app-spinner>
   <app-header></app-header>
   <app-sidebar></app-sidebar>
-  
+
   <div class="page-wrapper">
     <div class="container-fluid">
       <!-- Breadcrumbs -->
       <app-breadcrumbs></app-breadcrumbs>
-    
+
       <!-- Mi sistema de rutas -->
       <router-outlet></router-outlet>
-
     </div>
     <!-- ============================================================== -->
     <!-- footer -->
     <!-- ============================================================== -->
     <footer class="footer">
-    © {{year}} Prestamos YuMe - Todos los derechos reservados
+      © {{ year }} Prestamos YuMe - Todos los derechos reservados
     </footer>
     <!-- ============================================================== -->
     <!-- End footer -->
     <!-- ============================================================== -->
   </div>
-  
 </div>
