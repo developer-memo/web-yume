@@ -63,9 +63,9 @@
                 <small class="text-muted">Egresos </small>
                 <h6> {{ egresosMes | currency: 'USD' : 'symbol' : '1.0-0' }} </h6>
               </div>
-              <div class="col-lg-4 col-md-4">
+              <div class="col-lg-4 col-md-4 finanzas">
                 <small class="text-muted">Total acumulado </small>
-                <h6 [ngClass]="saldoRojoMes" > {{ totalAcumulaMes | currency: 'USD' : 'symbol' : '1.0-0'}} </h6>
+                <h6 [ngClass]="saldoRojoMes" > {{ totalAcumulaMes | currency: 'USD' : 'symbol' : '1.0-0'}} <span>({{percentTA | number: '1.1-1'}}%)</span> </h6>
               </div>
             </div>
             <hr>
@@ -80,13 +80,13 @@
                 <small class="text-muted">Ingresos totales </small>
                 <h6>{{ valIngresos | currency: 'USD' : 'symbol' : '1.0-0' }}</h6>
               </div>
-              <div class="col-lg-4 col-md-4">
+              <div class="col-lg-4 col-md-4 finanzas">
                 <small class="text-muted">Egresos totales </small>
-                <h6> {{ valEgresos | currency: 'USD' : 'symbol' : '1.0-0' }} </h6>
+                <h6> {{ valEgresos | currency: 'USD' : 'symbol' : '1.0-0' }} <span>({{percentEgre | number: '1.1-1'}}%)</span></h6>
               </div>
-              <div class="col-lg-4 col-md-4">
+              <div class="col-lg-4 col-md-4 finanzas">
                 <small class="text-muted">Total acumulado general </small>
-                <h6 [ngClass]="saldoRojo" > {{ totalAcumula | currency: 'USD' : 'symbol' : '1.0-0'}} </h6>
+                <h6 [ngClass]="saldoRojo" > {{ totalAcumula | currency: 'USD' : 'symbol' : '1.0-0'}} <span>({{percentIngre | number: '1.1-1'}}%)</span></h6>
               </div>
             </div>
             <br>

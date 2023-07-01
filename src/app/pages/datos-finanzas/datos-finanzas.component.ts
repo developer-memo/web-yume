@@ -31,6 +31,9 @@ export class DatosFinanzasComponent implements OnInit, OnDestroy {
   public egresosMes:number = 0;
   public totalAcumula:number = 0;
   public totalAcumulaMes:number = 0;
+  public percentTA:number;
+  public percentEgre:number;
+  public percentIngre:number;
   public saldoRojo:string = '';
   public saldoRojoMes:string = '';
   public nombreMes:string = '';
@@ -63,7 +66,7 @@ export class DatosFinanzasComponent implements OnInit, OnDestroy {
    */
   public getFinanzasById = (idUs:any) =>{
     this.finanza = JSON.parse(localStorage.getItem('finanzas'))[0];
-    
+
     //Obtenemos los ingresos
     const getIngre$ = this.finanzasServ.getIngresosByIdService(idUs).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
       this.ingresos = resp.ingresos || [];
@@ -77,28 +80,32 @@ export class DatosFinanzasComponent implements OnInit, OnDestroy {
 
     //Obtenemos los egresos
     const getEgre$ = this.finanzasServ.getEgresosByIdService(idUs).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
-      
+
       this.egresos = resp.egresos || [];
       this.getEgresosActual(this.egresos);
-      
+
       this.egresos.forEach( egre =>{
         this.valEgresos += egre.valor_egre;
       })
       //this.valIngresos -= this.valEgresos;
     }, (err) =>{ console.error(err); getEgre$.unsubscribe()})
-    
+
     setTimeout(() => {
       this.totalAcumula = this.valIngresos - this.valEgresos;
       this.totalAcumula < this.finanza.base_fina ? this.saldoRojo = 'saldoRojo' : '';
       this.totalAcumulaMes = this.ingresosMes - this.egresosMes;
       this.totalAcumulaMes < 0 ? this.saldoRojoMes = 'saldoRojo' : '';
+      this.percentTA = ( this.totalAcumulaMes * 100 )/this.ingresosMes;
+      this.percentEgre = ( this.valEgresos * 100 )/this.valIngresos;
+      this.percentIngre = ( this.totalAcumula * 100 )/this.valIngresos;
+
     }, 2000);
 
     this.nombreMes = new Intl.DateTimeFormat('es-ES', { month: 'long'}).format(new Date());
   }
 
 
-  public getIngresosActual = (ingresos:any) =>{    
+  public getIngresosActual = (ingresos:any) =>{
     const mesActual = new Date().toISOString().split('T')[0].slice(0,7);
 
     this.ingresosActual = ingresos.filter( ing => ing.fecha_ingre.split('T')[0].slice(0,7) == mesActual);
@@ -108,7 +115,7 @@ export class DatosFinanzasComponent implements OnInit, OnDestroy {
     });
   }
 
-  public getEgresosActual = (egresos:any) =>{    
+  public getEgresosActual = (egresos:any) =>{
     const mesActual = new Date().toISOString().split('T')[0].slice(0,7);
 
     this.egresosActual = egresos.filter( egr => egr.fecha_egre.split('T')[0].slice(0,7) == mesActual);
