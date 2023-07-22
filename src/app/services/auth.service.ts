@@ -14,13 +14,13 @@ const BASE_URL: String = environment.base_url;
 })
 export class AuthService {
 
-  public httpOptions:any = {}; 
+  public httpOptions:any = {};
   public usuario:User[] = [];
 
   constructor(
-              private http: HttpClient,
-              private router: Router
-  ) { 
+    private http: HttpClient,
+    private router: Router
+  ) {
     this.httpOptions = { headers: new HttpHeaders({ 'Content-Type':  'application/json'}) };
   }
 

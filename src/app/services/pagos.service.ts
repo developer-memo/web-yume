@@ -10,21 +10,21 @@ const BASE_URL: String = environment.base_url;
 })
 export class PagosService {
 
-  public httpOptions:any = {}; 
+  public httpOptions:any = {};
 
   constructor(
               private http: HttpClient,
   ) {
 
     this.httpOptions = { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'x-token': localStorage.getItem('token')}) };
-    
+
   }
 
 
   /**
    * Método de servicio para crear pagos
    * @param formData => Datos del formulario
-   * @param idCredito => ID del crédito 
+   * @param idCredito => ID del crédito
    * @param idUs => ID del cliente
    */
   public createPagosService = (formData:any, idCredito:any, idUs:any) =>{
@@ -45,9 +45,8 @@ export class PagosService {
   /**
    * Método de servicio para obtener los pagos
    */
-  public getAllPagosService = () =>{
-
-    return this.http.get(`${BASE_URL}/pagos`, this.httpOptions).pipe(
+  public getAllPagosService = (idUser:number|string) =>{
+    return this.http.get(`${BASE_URL}/pagos/${idUser}`, this.httpOptions).pipe(
       map( resp =>resp )
     )
 

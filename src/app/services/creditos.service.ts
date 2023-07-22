@@ -11,14 +11,14 @@ const BASE_URL: String = environment.base_url;
 })
 export class CreditosService {
 
-  public httpOptions:any = {}; 
+  public httpOptions:any = {};
 
   constructor(
               private http: HttpClient,
   ) {
 
     this.httpOptions = { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'x-token': localStorage.getItem('token')}) };
-    
+
   }
 
 
@@ -46,12 +46,10 @@ export class CreditosService {
   /**
    * Método de servicio para obtener todos los créditos
    */
-  public getAllCreditosService = () =>{
-
-    return this.http.get(`${BASE_URL}/allCreditos`, this.httpOptions).pipe(
+  public getAllCreditosService = (idUser:number|string) =>{
+    return this.http.get(`${BASE_URL}/allCreditos/${idUser}`, this.httpOptions).pipe(
       map( resp => resp )
     )
-
   }
 
 
@@ -80,7 +78,7 @@ export class CreditosService {
       monto: formData.monto,
       plazo: formData.plazo,
       valorcuota: formData.valorcuota,
-      comentario: formData.comentario, 
+      comentario: formData.comentario,
       estado: formData.estado == true? 1 : 0
     }
     return this.http.put(`${BASE_URL}/updateCredito`, json, this.httpOptions).pipe(

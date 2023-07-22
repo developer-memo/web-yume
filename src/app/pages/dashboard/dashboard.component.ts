@@ -45,7 +45,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.usuario = this.authServ.usuario[0];
-
     //Obtenemos los clientes
     this.getAllClientes();
 
@@ -88,7 +87,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Método para obtener los créditos
    */
   public getAllCreditos = () =>{
-    this.creditosServ.getAllCreditosService().pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
+    this.creditosServ.getAllCreditosService(this.usuario.id).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
       this.creditos = resp.creditos || [];
     }, err => console.error(err)) ;
   }
@@ -98,7 +97,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Método para obtener los pagos
    */
   public getAllPagos = () =>{
-    this.pagosServ.getAllPagosService().pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
+    this.pagosServ.getAllPagosService(this.usuario.id).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
       this.pagos = resp.pagos || [];
       this.pagos.forEach( pag =>{
         this.totalPagado += pag.valor_pag;

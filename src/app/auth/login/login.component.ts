@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginForm } from 'src/app/interfaces/login-form.interface';
@@ -18,11 +18,11 @@ export class LoginComponent implements OnInit {
   public esperando:boolean = false;
   public loginForm:FormGroup;
 
-  constructor( 
-              private router: Router,
-              private fb: FormBuilder,
-              private authServ: AuthService 
-              ) { }
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private authServ: AuthService,
+  ) { }
 
   ngOnInit(): void {
     //Iniciar formulario
@@ -37,17 +37,17 @@ export class LoginComponent implements OnInit {
     this.formSubmitted = true;
 
     if ( this.loginForm.invalid ) {
-      return; 
+      return;
     }
 
     this.esperando = true;
     this.authServ.loginService( this.loginForm.value ).subscribe( resp =>{
-      
+
       this.guardaLocalStorage(this.loginForm.value);
       this.esperando = false;
       this.router.navigateByUrl('/');
-      
-      
+
+
     }, (err) =>{
       //En caso de un error
       Swal.fire('Error', err.error.msg, 'error');
@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit {
    * @param formData => Data del formulario login
    */
   public guardaLocalStorage = (formData:LoginForm) => {
-    
+
     if ( formData.remember ) {
       localStorage.setItem('email', formData.email );
       localStorage.setItem('remember', JSON.stringify(formData.remember) );

@@ -5,6 +5,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +31,8 @@ export class HeaderComponent implements OnInit {
       this.btnMenu = this.element.nativeElement.querySelector('#btn-menu-toggle');
       this.sharedSrv.sendHtmlService(this.btnMenu);
     }
+
+    this.autoLogOut();
   }
 
 
@@ -50,6 +53,20 @@ export class HeaderComponent implements OnInit {
         setTimeout(() => { this.authSrv.logoutService(); Swal.close(); }, 1000);
       }
     });
+  }
+
+
+  public autoLogOut() {
+    let count = 300;
+    const interval = window.setInterval(() =>{
+      document.onmousemove = function(){ count = 300 }
+      count--;
+
+      if(count == 1){
+        this.authSrv.logoutService();
+        clearInterval(interval);
+      }
+    }, 1000)
   }
 
 }
