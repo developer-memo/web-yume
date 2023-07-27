@@ -17,19 +17,21 @@ export class RegisterComponent implements OnInit {
   public registerForm = this.fb.group({
     nombre: ['', [ Validators.required, Validators.minLength(6) ]],
     email: ['', [ Validators.required, Validators.email ]],
+    genero: ['', [ Validators.required ]],
     password: ['', [ Validators.required, Validators.minLength(8) ]],
     password2: ['', [ Validators.required, Validators.minLength(8) ]],
     terminos: [false, [ Validators.required ]],
-
+    direccion: ['Ejemplo 00 # 00 - 00'],
+    telefono: [123],
   }, {
     validators: this.passwordsIguales('password', 'password2')
   });
 
-  constructor( 
-              private fb: FormBuilder,
-              private usuarioSrv: UsuarioService,
-              private router: Router
-              ) { }
+  constructor(
+    private fb: FormBuilder,
+    private usuarioSrv: UsuarioService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }
@@ -38,50 +40,27 @@ export class RegisterComponent implements OnInit {
   /**
    * Método para registrar un usuario
    */
-  public crearUsuario = async() =>{
+  public registrarUsuario = async() =>{
     this.formSubmitted = true;
 
-    if ( this.registerForm.invalid ) {
-      return; 
-    }
+    if ( this.registerForm.invalid ) { return; }
+    if ( !this.registerForm.get('terminos').value ) { return; }
 
-    if ( this.registerForm.get('terminos').value ) {
-      
-      //Realizar la creación de usuario
-      // await this.usuarioSrv.crearUsuarioServices( this.registerForm.value ).subscribe( resp =>{
-        
-      //   if ( resp.ok ) {
-      //     this.usuarioSrv.crearInfoUsuarioService( resp.token ).subscribe( data => {
-          
-      //       if ( data['ok'] ) {
-      //         this.usuarioSrv.getInfoUserService(resp.usuario.uid, resp.token).subscribe( data2 =>{
-  
-      //           this.completeInfo = data2.infoUserDB[0].usuario.completeInfo;
-      //           if ( this.completeInfo ) {
-      //             Swal.fire('Hola!', data2.infoUserDB[0].usuario.nombre, 'success');
-                  
-      //           } else {
-      //             Swal.fire('Hola!', data2.infoUserDB[0].usuario.nombre+'. Por favor no olvides completar tu cuenta para poder utilizar por completo VelaPay.', 'success');
-      //           }
-                
-      //           this.router.navigateByUrl('/');
-      //         })
-      //       } else {
-      //         Swal.fire('Lo sentimos!', 'En este momento no puedes registrarte. Inténtalo más tarde.', 'warning');
-      //         return;
-      //       }
-            
-      //     });
-      //   } else {
-      //     Swal.fire('Lo sentimos!', 'En este momento no puedes registrarte. Inténtalo más tarde.', 'warning');
-      //     return;
-      //   }
-        
-      // }, ( err ) =>{
-      //   Swal.fire('Error', err.error.msg, 'error');
-      // });
-    }
+    await this.usuarioSrv.registrarUsuarioServices( this.registerForm.value ).then( (resp:any) =>{
+      Swal.fire(
+        'Bien hecho!',
+        `¡Hola ${this.registerForm.get('nombre').value}! Tu cuenta fue creada con éxito. Una vez el administrador la valide, se te informará por correo electrónico el acceso a la plartaforma.`,
+        'success'
+        );
+      this.router.navigate(['/']);
 
+      // TODO
+      // CREAR METODO PARA ENVIUAR CORREO NOTIFICACION AL ADMIN Y USUARIO
+
+    }).catch( err =>{
+      console.error(err);
+      Swal.fire('Error', err.error.msg, 'error');
+    })
   }
 
 

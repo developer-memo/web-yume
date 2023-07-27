@@ -23,7 +23,7 @@ export class DetalleClientesComponent implements OnInit, OnDestroy {
   public formEditCliente:FormGroup;
   public formSubmitted = false;
 
-  constructor( 
+  constructor(
     private routeActive: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router,
@@ -67,18 +67,18 @@ export class DetalleClientesComponent implements OnInit, OnDestroy {
     this.formSubmitted = true;
 
     if ( this.formEditCliente.invalid ) {
-      return; 
+      return;
     }
     this.clienteServ.updateClienteService(this.formEditCliente.value, this.cliente.id).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
-      
+
       Swal.fire('Bien!', resp.msg, 'success');
-      setTimeout(() => { this.router.navigate(['dashboard/lista-clientes']); Swal.close(); }, 2000);
+      setTimeout(() => { this.router.navigate(['dashboard/clientes/lista-clientes']); Swal.close(); }, 2000);
 
     }, (err) =>{
       Swal.fire('Error', err.error.msg, 'error');
     })
   }
- 
+
 
   /**
    * Método para cargar el formulario
@@ -101,16 +101,16 @@ export class DetalleClientesComponent implements OnInit, OnDestroy {
    * @param idUs => ID del cliente
    */
   public navegarCrearCredito = (idUs:any) =>{
-    this.router.navigate(['dashboard/crear-credito', idUs]);
+    this.router.navigate(['dashboard/creditos/crear-credito', idUs]);
   }
-  
-  
+
+
   /**
    * Método para navegar a ver crédito
    * @param idUs => ID del cliente
    */
   public navegarVerCredito = (idUs:any) =>{
-    this.router.navigate(['dashboard/detalle-credito', idUs]);
+    this.router.navigate(['dashboard/creditos/detalle-credito', idUs]);
   }
 
 

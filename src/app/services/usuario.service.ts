@@ -14,18 +14,18 @@ const BASE_URL: String = environment.base_url;
 })
 export class UsuarioService {
 
-  public httpOptions:any = {}; 
+  public httpOptions:any = {};
+  public httpOptions2:any = {};
   public timeElapsed = Date.now();
   public today = new Date(this.timeElapsed);
   public usuario:any[] = [];
 
-  constructor( 
+  constructor(
               private http: HttpClient,
               private router: Router
                ) {
-
     this.httpOptions = { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'x-token': localStorage.getItem('token')}) };
-
+    this.httpOptions2 = { headers: new HttpHeaders({ 'Content-Type':  'application/json'}) };
    }
 
 
@@ -33,14 +33,15 @@ export class UsuarioService {
    * Método de servicio para crear usuarios
    * @param formData => Información del formulario
    */
-  public crearUsuarioServices = ( formData: ClienteForm ) =>{
+  public crearUsuarioServices = ( formData: ClienteForm, useAdmin:number|string ) =>{
     const json = {
       nombre: formData.nombre,
       email: formData.email,
-      password: '12345',
+      password: '%$(/(=!&#)&%@#',
       telefono: formData.telefono,
       direccion: formData.direccion,
-      genero: formData.genero
+      genero: formData.genero,
+      useadmin: useAdmin
     }
     return this.http.post(`${BASE_URL}/insertUsuario`, json, this.httpOptions).pipe(
       tap( (resp: any) => {})
@@ -48,12 +49,26 @@ export class UsuarioService {
   }
 
 
+  public registrarUsuarioServices = async( formData: ClienteForm ) =>{
+    const json = {
+      nombre: formData.nombre,
+      email: formData.email,
+      password: formData.password,
+      telefono: formData.telefono,
+      direccion: formData.direccion,
+      genero: formData.genero
+    }
+    return await this.http.post<any>(`${BASE_URL}/registerUsuario`, json, this.httpOptions2).toPromise();
+
+  }
+
+
 
   /**
    * Método de servicio para obtener todo los clientes
    */
-  public getClientesService = () =>{
-    return this.http.get(`${BASE_URL}/usuarios`, this.httpOptions).pipe(
+  public getClientesService = (user:number|string) =>{
+    return this.http.get(`${BASE_URL}/usuarios/${user}`, this.httpOptions).pipe(
       map( resp => resp)
     )
   }
@@ -108,7 +123,7 @@ export class UsuarioService {
       tap( resp => resp )
     )
   }
-  
 
-  
+
+
 }

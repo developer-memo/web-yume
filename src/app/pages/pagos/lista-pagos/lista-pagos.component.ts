@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { PagosService } from 'src/app/services/pagos.service';
 import { takeUntil } from 'rxjs/operators';
+import { User } from 'src/app/interfaces/user.interface';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-lista-pagos',
@@ -12,12 +14,14 @@ export class ListaPagosComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
+  public usuario:User;
   public pagos:any[] = [];
   public finanzas:any[] = [];
   public totalPagos:number = 0;
 
   constructor(
-    private pagosServ: PagosService
+    private pagosServ: PagosService,
+    private authServ: AuthService,
   ) { }
 
   ngOnDestroy(): void {
@@ -26,6 +30,7 @@ export class ListaPagosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.usuario = this.authServ.usuario[0];
     this.finanzas = JSON.parse( localStorage.getItem('finanzas') ) || [];
     this.getAllPagos();
   }
@@ -35,8 +40,8 @@ export class ListaPagosComponent implements OnInit, OnDestroy {
    * Método para obtener todos los pagos
    */
   public getAllPagos = () =>{
-    this.pagosServ.getAllPagosService().pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
-      
+    this.pagosServ.getAllPagosService(this.usuario.id).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
+
       this.pagos = resp.pagos || [];
       this.pagos.forEach( pag =>{
         this.totalPagos += pag.valor_pag;
@@ -48,7 +53,7 @@ export class ListaPagosComponent implements OnInit, OnDestroy {
 
 
   public navegarVerCredito = () =>{
-    
+
   }
 
 

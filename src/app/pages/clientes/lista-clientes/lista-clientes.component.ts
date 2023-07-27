@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/interfaces/user.interface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-lista-clientes',
@@ -15,11 +16,13 @@ export class ListaClientesComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll:Subject<any> = new Subject<any>();
 
+  public usuario:User;
   public clientes:User;
 
   constructor(
-              private clientesServ: UsuarioService,
-              private router: Router
+    private clientesServ: UsuarioService,
+    private router: Router,
+    private authServ: AuthService,
   ) { }
 
   ngOnDestroy(): void {
@@ -28,6 +31,7 @@ export class ListaClientesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.usuario = this.authServ.usuario[0];
     this.getAllClientes();
   }
 
@@ -36,7 +40,7 @@ export class ListaClientesComponent implements OnInit, OnDestroy {
    * Método para obtener los clientes
    */
   public getAllClientes = () =>{
-    this.clientesServ.getClientesService().pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
+    this.clientesServ.getClientesService(this.usuario.id).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
       this.clientes = resp.usuarios.map((us:any) =>({
         id:        us.id_us,
         nombre:    us.nombre_us,
@@ -51,6 +55,7 @@ export class ListaClientesComponent implements OnInit, OnDestroy {
       }));
     }, (err) =>{
       Swal.fire('Error', 'En este momento no es posible cargar los clientes. Inténtelo más tarde.', 'error');
+      console.log(err);
       setTimeout(() => { Swal.close(); }, 2000);
     })
   }
@@ -61,8 +66,8 @@ export class ListaClientesComponent implements OnInit, OnDestroy {
    * @param cliente => Objeto con datos del cliente
    */
   public navegarDetalleCliente = (id:number) =>{
-    this.router.navigate(['dashboard/detalle-clientes', id]);
+    this.router.navigate(['dashboard/clientes/detalle-clientes', id]);
   }
-  
+
 
 }

@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { PagosService } from 'src/app/services/pagos.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/interfaces/user.interface';
 
 @Component({
   selector: 'app-lista-creditos',
@@ -12,9 +14,10 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./lista-creditos.component.css']
 })
 export class ListaCreditosComponent implements OnInit, OnDestroy {
-  
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
+  public usuario:User;
   public creditos:any[] = [];
   public pagos:any[] = [];
   public finanzas:any[] = [];
@@ -24,6 +27,7 @@ export class ListaCreditosComponent implements OnInit, OnDestroy {
     private creditosServ: CreditosService,
     private pagosServ: PagosService,
     private router: Router,
+    private authServ: AuthService,
   ) { }
 
   ngOnDestroy(): void {
@@ -32,6 +36,7 @@ export class ListaCreditosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.usuario = this.authServ.usuario[0];
     this.finanzas = JSON.parse( localStorage.getItem('finanzas') ) || [];
     this.getAllCreditos()
     this.getAllPagos()
@@ -39,7 +44,7 @@ export class ListaCreditosComponent implements OnInit, OnDestroy {
 
 
   public getAllCreditos = () =>{
-    this.creditosServ.getAllCreditosService().pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
+    this.creditosServ.getAllCreditosService(this.usuario.id).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
       this.creditos = resp.creditos || [];
     }, (err) =>{
       console.error(err.error);
@@ -52,7 +57,7 @@ export class ListaCreditosComponent implements OnInit, OnDestroy {
    */
    public getAllPagos = () =>{
 
-    this.pagosServ.getAllPagosService().pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
+    this.pagosServ.getAllPagosService(this.usuario.id).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
       this.pagos = resp.pagos || [];
       this.pagos.forEach( pag =>{
         this.totalPagos += pag.valor_pag;
@@ -69,7 +74,7 @@ export class ListaCreditosComponent implements OnInit, OnDestroy {
    * @param idUs => ID del cliente
    */
   public navegarVerCredito = (idUs:any) =>{
-    this.router.navigate(['dashboard/detalle-credito', idUs]);
+    this.router.navigate(['dashboard/creditos/detalle-credito', idUs]);
   }
 
 

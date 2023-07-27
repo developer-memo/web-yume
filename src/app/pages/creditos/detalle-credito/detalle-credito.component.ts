@@ -19,7 +19,7 @@ export class DetalleCreditoComponent implements OnInit {
   public pagos:any[] = [];
   public formEditCredito:FormGroup;
   public formSubmitted = false;
-  public totalPagado:number = 0; 
+  public totalPagado:number = 0;
 
   constructor(
               private routeActive: ActivatedRoute,
@@ -141,7 +141,7 @@ export class DetalleCreditoComponent implements OnInit {
    */
   public navegarCrearPago = (credito:any) =>{
     const ObjCredito = JSON.stringify(credito);
-    this.router.navigate(['dashboard/crear-pagos', ObjCredito]);
+    this.router.navigate(['dashboard/pagos/crear-pagos', ObjCredito]);
 
   }
 
@@ -152,7 +152,7 @@ export class DetalleCreditoComponent implements OnInit {
    */
   public navegarVerPagos = (pago:any) =>{
     const ObjPago = JSON.stringify(pago);
-    this.router.navigate(['dashboard/detalle-pagos', ObjPago]);
+    this.router.navigate(['dashboard/pagos/detalle-pagos', ObjPago]);
 
   }
 

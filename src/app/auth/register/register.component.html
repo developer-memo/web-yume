@@ -5,9 +5,9 @@
   <div class="login-box card">
     <div class="card-body">
 
-      <form autocomplete="off" [formGroup]="registerForm" (submit)="crearUsuario()" class="form-horizontal form-material" id="loginform">
+      <form [formGroup]="registerForm" (submit)="registrarUsuario()" class="form-horizontal form-material">
         <a href="javascript:void(0)" class="text-center db logoPrincipal"><img src="./assets/images/logo-icon.png" alt="Home" /></a>
-        <h3 class="box-title m-t-10 m-b-0">Regístrate ahora</h3><small>Crea tu cuenta y disfruta</small>
+        <h3 class="box-title m-t-10 m-b-0">Regístrate ahora</h3><small>Crea tu cuenta en el siguiente formulario</small>
         <div class="form-group m-t-20">
           <div class="col-xs-12">
             <input class="form-control" type="text" formControlName="nombre" placeholder="Nombre completo*">
@@ -16,6 +16,16 @@
         <div class="form-group ">
           <div class="col-xs-12">
             <input class="form-control" type="text" formControlName="email" placeholder="Correo Electrónico*">
+          </div>
+        </div>
+        <div class="form-group ">
+          <div class="col-xs-12">
+            <label for="">Género</label>
+            <select formControlName="genero" class="form-control">
+              <option value="M" >Masculino</option>
+              <option value="F" >Femenino</option>
+              <option value="O" >Otro</option>
+            </select>
           </div>
         </div>
         <div class="form-group ">
@@ -41,6 +51,7 @@
           <div class="col text-danger">
             <p *ngIf="campoNoValido('nombre')" >*El nombre es obligatorio</p>
             <p *ngIf="campoNoValido('email')" >*El E-mail es obligatorio y válido.</p>
+            <p *ngIf="campoNoValido('genero')" >*El Género es obligatorio.</p>
             <p *ngIf="contrasenasNoValidas()" >*Las contraseñas deben de ser iguales Min 8 caracteres.</p>
             <p *ngIf="aceptaTerminos()" >*Debe aceptar los términos de uso..</p>
           </div>
@@ -48,7 +59,7 @@
 
         <div class="form-group text-center m-t-20">
           <div class="col-xs-12">
-            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Regístrate</button>
+            <button class="btn btn-info btn-lg btn-block text-uppercase btn-rounded btnYume" type="submit">Regístrate</button>
           </div>
         </div>
         <div class="form-group m-b-0">

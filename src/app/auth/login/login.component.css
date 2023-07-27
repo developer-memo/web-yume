@@ -26,7 +26,7 @@ Login register and recover password Page
 		width: 100%;
 		padding: 10% 0;
 		position: fixed; }
-	
+
 	.login-box {
 		width: 400px;
 		margin: 0 auto; }
@@ -37,10 +37,10 @@ Login register and recover password Page
 		.login-box .social {
 			display: block;
 			margin-bottom: 30px; }
-	
+
 	#recoverform {
 		display: none; }
-	
+
 	.login-sidebar {
 		padding: 0px;
 		margin-top: 0px; }
@@ -52,7 +52,7 @@ Login register and recover password Page
 .logoPrincipal img{
 	width: 115px;
 }
-.btnVelapay{
+.btnYume{
 	background-color: #13de80;
 	border-color: #13de80;
 	font-size: 15px;
@@ -81,4 +81,3 @@ Login register and recover password Page
 		width: 300px;
 	}
 }
-	

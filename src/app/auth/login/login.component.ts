@@ -35,10 +35,7 @@ export class LoginComponent implements OnInit {
    */
   public login = () =>{
     this.formSubmitted = true;
-
-    if ( this.loginForm.invalid ) {
-      return;
-    }
+    if ( this.loginForm.invalid ) { return; }
 
     this.esperando = true;
     this.authServ.loginService( this.loginForm.value ).subscribe( resp =>{

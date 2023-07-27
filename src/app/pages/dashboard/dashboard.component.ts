@@ -67,7 +67,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Método para obtener los clientes
    */
   public getAllClientes = async() =>{
-    this.clientesServ.getClientesService().pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
+    this.clientesServ.getClientesService(this.usuario.id).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
       this.clientes = resp.usuarios.map((us:any) =>({
         id:        us.id_us,
         nombre:    us.nombre_us,
