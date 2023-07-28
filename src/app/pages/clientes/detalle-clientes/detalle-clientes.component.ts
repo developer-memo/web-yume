@@ -8,6 +8,7 @@ import { User } from 'src/app/interfaces/user.interface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-detalle-clientes',
@@ -17,11 +18,14 @@ import { ToastrService } from 'ngx-toastr';
 export class DetalleClientesComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  private debounceTimer?: NodeJS.Timeout;
 
   public idUs:number;
   public cliente:User;
+  public usuario:User;
   public formEditCliente:FormGroup;
   public formSubmitted = false;
+  public checkboxValue:boolean = false;
 
   constructor(
     private routeActive: ActivatedRoute,
@@ -30,6 +34,7 @@ export class DetalleClientesComponent implements OnInit, OnDestroy {
     private location: Location,
     private clienteServ: UsuarioService,
     private toastrSvc: ToastrService,
+    private authServ: AuthService,
   ) { }
 
   ngOnDestroy(): void {
@@ -38,6 +43,7 @@ export class DetalleClientesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.usuario = this.authServ.usuario[0];
     this.routeActive.params.subscribe( data => {
       this.idUs = JSON.parse( data['idUs'] );
     });
@@ -52,6 +58,7 @@ export class DetalleClientesComponent implements OnInit, OnDestroy {
   public getClienteById = () =>{
     const clienteSrv$ = this.clienteServ.getClienteByIdService(this.idUs).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
       this.cliente = resp || [];
+      (this.cliente.permiso == 'Y') ? this.checkboxValue = true : this.checkboxValue = false;
     }, err =>{
       console.log(err);
       clienteSrv$.unsubscribe();
@@ -70,10 +77,8 @@ export class DetalleClientesComponent implements OnInit, OnDestroy {
       return;
     }
     this.clienteServ.updateClienteService(this.formEditCliente.value, this.cliente.id).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
-
       Swal.fire('Bien!', resp.msg, 'success');
       setTimeout(() => { this.router.navigate(['dashboard/clientes/lista-clientes']); Swal.close(); }, 2000);
-
     }, (err) =>{
       Swal.fire('Error', err.error.msg, 'error');
     })
@@ -127,6 +132,31 @@ export class DetalleClientesComponent implements OnInit, OnDestroy {
       genero: ['', [Validators.required]],
       estado: ['', [Validators.required]],
     })
+  }
+
+
+
+   switchAcceso(value:boolean) {
+    if(this.debounceTimer) clearTimeout(this.debounceTimer);
+    let opt = '';
+    let msg = '';
+    (value)? opt = 'Y' : opt = 'N';
+    if(value) msg = `Se envio un correo electrónico a ${this.cliente.nombre} para que pueda ingresar a YUME.`;
+    const json = {
+      permiso: opt,
+      id: this.idUs
+    }
+    this.debounceTimer = setTimeout( async() => {
+      await this.clienteServ.updateAccesoService(json).then( (resp:any) =>{
+        this.toastrSvc.success(`${resp.msg} ${msg}`, 'Bien hecho!');
+
+      }).catch( err =>{
+        console.log(err);
+        this.toastrSvc.error(`${err.error.msg}..`, 'Uppsss!');
+      })
+
+      if( value ) await this.clienteServ.sendEmailNewUserService(this.cliente, 'accesoUserEmail');
+    }, 1500);
   }
 
 

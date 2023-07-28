@@ -22,9 +22,9 @@
     <div class="card">
       <div class="card-body">
         <small class="text-muted">Correo electrónico </small>
-        <h6>{{cliente.email}}</h6> 
+        <h6>{{cliente.email}}</h6>
         <small class="text-muted p-t-30 db">Teléfono</small>
-        <h6>{{cliente.telefono}}</h6> 
+        <h6>{{cliente.telefono}}</h6>
         <small class="text-muted p-t-30 db">Dirección</small>
         <h6>{{cliente.direccion}}</h6>
         <div class="map-box">
@@ -37,7 +37,7 @@
       </div>
     </div>
   </div>
- 
+
   <div class="col-lg-8 col-xlg-9 col-md-7">
     <div class="card">
       <!-- Nav tabs -->
@@ -70,11 +70,24 @@
             <hr>
             <p class="m-t-30">El usuario {{cliente.nombre}} tiene un crédito activo en YuMe, a continuación puede configurar su cuenta, crear créditos y pagos.</p>
             <div class="contBtn">
-              <button type="button" (click)="navegarCrearCredito(cliente.id)" class="btn waves-effect waves-light btn-rounded btn-info">Crear crédito</button>
-              &nbsp;
-              <button type="button" (click)="navegarVerCredito(cliente.id)" class="btn waves-effect waves-light btn-rounded btn-warning">Ver crédito</button>
-              &nbsp;
-              <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+              <div>
+                <button type="button" (click)="navegarCrearCredito(cliente.id)" class="btn waves-effect waves-light btn-rounded btn-info">Crear crédito</button>
+                &nbsp;
+                <button type="button" (click)="navegarVerCredito(cliente.id)" class="btn waves-effect waves-light btn-rounded btn-warning">Ver crédito</button>
+                &nbsp;
+                <button type="button" (click)="goBack()" class="btn waves-effect waves-light btn-rounded btn-danger">Volver</button>
+              </div>
+              <div *ngIf="usuario.admin == 'Y'">
+                <label class="switch">
+                  <input type="checkbox"
+                    #switch
+                    [(ngModel)]="checkboxValue"
+                    (change)="switchAcceso(checkboxValue)"
+                    class="input-switch">
+                  <span class="slider"></span>
+                </label>
+                <span>Acceso a la plataforma</span>
+              </div>
             </div>
           </div>
         </div>

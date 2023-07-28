@@ -21,9 +21,9 @@ export class UsuarioService {
   public usuario:any[] = [];
 
   constructor(
-              private http: HttpClient,
-              private router: Router
-               ) {
+    private http: HttpClient,
+    private router: Router
+  ) {
     this.httpOptions = { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'x-token': localStorage.getItem('token')}) };
     this.httpOptions2 = { headers: new HttpHeaders({ 'Content-Type':  'application/json'}) };
    }
@@ -89,7 +89,8 @@ export class UsuarioService {
           genero:    resp.usuario[0].genero_us,
           admin:     resp.usuario[0].admin_us,
           fechareg:  resp.usuario[0].fechareg_us,
-          avatar:    resp.usuario[0].avatar_us
+          avatar:    resp.usuario[0].avatar_us,
+          permiso:   resp.usuario[0].permiso_acceso
       }))
     )
   }
@@ -122,6 +123,27 @@ export class UsuarioService {
     return this.http.put(`${BASE_URL}/updateUser`, formData, this.httpOptions ).pipe(
       tap( resp => resp )
     )
+  }
+
+  /**
+   * Método de servicio para actualizar el usuario
+   */
+  public updateAccesoService = async(payload:Object) => {
+    return await this.http.put<any>(`${BASE_URL}/updateAcceso`, payload, this.httpOptions).toPromise();
+  }
+
+
+  /**
+ * Método de servicio para enviar email al admin de nuevo user
+ */
+  public sendEmailNewUserService = async(payload:any, endpoint:string) =>{
+    const json = {
+      nombre: payload.nombre,
+      email: payload.email
+    }
+    return await this.http.post<any>(`${BASE_URL}/${endpoint}`, json, this.httpOptions2).pipe(
+      tap(res => console.log(res))
+    ).toPromise();
   }
 
 

@@ -9,4 +9,5 @@ export interface User {
   admin:     string;
   fechareg:  string;
   avatar:    string;
+  permiso:   string;
 }

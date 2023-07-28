@@ -13,6 +13,7 @@ export class RegisterComponent implements OnInit {
 
   public formSubmitted = false;
   public completeInfo:boolean = false;
+  public isRegister:boolean = false;
 
   public registerForm = this.fb.group({
     nombre: ['', [ Validators.required, Validators.minLength(6) ]],
@@ -52,15 +53,19 @@ export class RegisterComponent implements OnInit {
         `¡Hola ${this.registerForm.get('nombre').value}! Tu cuenta fue creada con éxito. Una vez el administrador la valide, se te informará por correo electrónico el acceso a la plartaforma.`,
         'success'
         );
+      this.isRegister = resp.ok;
       this.router.navigate(['/']);
 
-      // TODO
-      // CREAR METODO PARA ENVIUAR CORREO NOTIFICACION AL ADMIN Y USUARIO
+      //this.usuarioSrv.sendEmailNewUserService(this.registerForm.value)
+
 
     }).catch( err =>{
       console.error(err);
       Swal.fire('Error', err.error.msg, 'error');
     })
+
+    if (this.isRegister) this.usuarioSrv.sendEmailNewUserService(this.registerForm.value, 'newUserEmail');
+
   }
 
 
