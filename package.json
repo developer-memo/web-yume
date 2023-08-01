@@ -25,6 +25,7 @@
     "chartjs-plugin-datalabels": "^0.7.0",
     "ng-multiselect-dropdown": "^0.3.9",
     "ng2-charts": "^2.4.2",
+    "ngx-socket-io": "^4.1.0",
     "ngx-toastr": "^13.2.1",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.12.5",

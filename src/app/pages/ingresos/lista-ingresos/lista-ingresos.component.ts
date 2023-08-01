@@ -64,7 +64,6 @@ export class ListaIngresosComponent implements OnInit, OnDestroy  {
   public getIngresosById = (idUs:any) =>{
     const getIngre$ = this.finanzasServ.getIngresosByIdService(idUs).pipe(takeUntil(this._unsubscribeAll)).subscribe( (resp:any) =>{
       this.ingresos = resp.ingresos || [];
-      console.log(this.ingresos);
       this.initMatTable(this.ingresos);
       this.sumaValores(this.ingresos);
     }, (err) =>{ console.error(err); getIngre$.unsubscribe()})

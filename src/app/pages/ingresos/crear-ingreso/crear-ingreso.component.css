@@ -1,6 +1,9 @@
 .cont-multi-select {
   border-bottom: 1px solid #e9edf2;
 }
+.input-valor {
+  background-color: azure;
+}
 ::ng-deep.multiselect-dropdown .dropdown-btn {
   border: 0 !important;
 }

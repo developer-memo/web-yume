@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ComponentsModule } from '../components/components.module';
 
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -20,6 +21,10 @@ import { SpinnerComponent } from './spinner/spinner.component';
     HeaderComponent,
     SpinnerComponent
   ],
-  imports: [CommonModule, RouterModule]
+  imports: [
+    CommonModule,
+    RouterModule,
+    ComponentsModule
+  ]
 })
 export class SharedModule {}

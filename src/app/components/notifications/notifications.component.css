@@ -1,0 +1,35 @@
+.cont-notifica {
+  position: relative;
+}
+a.nav-link {
+  color: #a6b7bf !important;
+  line-height: 55px;
+}
+a.nav-link:hover, a.nav-link:focus {
+  color: #242a33 !important;
+}
+.notify {
+  top: -30px;
+}
+.btn-circle {
+  margin-right: 10px;
+}
+.btn-trash {
+  position: absolute;
+  top: 3px;
+  right: 10px;
+  z-index: 99;
+  cursor: pointer;
+  border: 0;
+  color: #ef5350;
+  border-radius: 13px;
+  width: 27px;
+  height: 26px;
+}
+.btn-trash i {
+  font-size: 12px;
+}
+.msgEmpty {
+  text-align: center;
+  line-height: 12;
+}

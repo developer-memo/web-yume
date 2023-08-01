@@ -5,7 +5,6 @@ import { SharedService } from 'src/app/services/shared.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-header',
@@ -17,16 +16,19 @@ export class HeaderComponent implements OnInit {
   mediaqueryList = window.matchMedia("(max-width: 768px)");
   dataInfoUser:User;
   btnMenu: HTMLElement;
+  eventName: string = 'send-notification';
 
   constructor(
     private authSrv: AuthService,
     private sharedSrv: SharedService,
-    private element: ElementRef<HTMLElement>,
+    private element: ElementRef<HTMLElement>
   ) { }
 
 
   ngOnInit(): void {
     this.dataInfoUser = this.authSrv.usuario[0];
+
+
     if(this.mediaqueryList.matches) {
       this.btnMenu = this.element.nativeElement.querySelector('#btn-menu-toggle');
       this.sharedSrv.sendHtmlService(this.btnMenu);

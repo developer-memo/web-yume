@@ -4,7 +4,7 @@
     <div class="card"> <img class="card-img" src="../assets/images/background/fondoPerfil.jpg" alt="Card image">
       <div class="card-img-overlay card-inverse social-profile d-flex text-center justify-content-center">
         <div class="align-self-center">
-          <div>
+          <div class="cont-img">
             <img *ngIf="cliente.avatar; else noAvatar" src="https://files.gtsoftweb.com/images/{{cliente.avatar}}" class="img-circle" width="100">
           </div>
           <ng-template #noAvatar>

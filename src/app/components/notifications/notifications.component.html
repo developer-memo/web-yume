@@ -1,0 +1,51 @@
+
+<a
+  class="nav-link dropdown-toggle waves-effect waves-dark"
+  href=""
+  data-toggle="dropdown"
+  aria-haspopup="true"
+  aria-expanded="false"
+>
+  <i class="mdi mdi-message"></i>
+  <div class="notify" *ngIf="notifications.length > 0">
+    <span class="heartbit"></span> <span class="point"></span>
+  </div>
+</a>
+<div
+  class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown fast"
+>
+  <ul>
+    <li>
+      <div class="drop-title">Notificaciones</div>
+    </li>
+    <li>
+      <div class="message-center">
+        <!-- Message -->
+        <div class="cont-notifica" *ngFor="let noti of notifications">
+          <a href="#" >
+            <div class="btn btn-{{notificationsType[noti.tipo].color}} btn-circle">
+              <i [class]="notificationsType[noti.tipo].icon"></i>
+            </div>
+            <div class="mail-contnet">
+              <h5>{{noti.titulo}}</h5>
+              <span class="mail-desc">{{noti.desp}}</span>
+              <span class="time">{{noti.fecha | date:'short'}}</span>
+            </div>
+          </a>
+          <button class="btn-trash" (click)="delNotificationById(noti.id)">
+            <i class="ti-trash"></i>
+          </button>
+        </div>
+        <div *ngIf="notifications.length == 0" class="msgEmpty">
+          <p>Estas al día con las notificaciones!</p>
+        </div>
+      </div>
+    </li>
+    <li>
+      <a class="nav-link text-center" href="#" (click)="delAllNotifications()">
+        <strong>Validar todas las notificaciones</strong>
+        <i class="fa fa-angle-right"></i>
+      </a>
+    </li>
+  </ul>
+</div>

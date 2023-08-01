@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -12,7 +13,10 @@ import { AppComponent } from './app.component';
 import { NotpagefoundComponent } from './notpagefound/notpagefound.component';
 import { CurrencyPipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 
+//Socket.io
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
+const config: SocketIoConfig = { url: environment.websocket_url, options: {} };
 
 @NgModule({
   declarations: [
@@ -26,6 +30,7 @@ import { CurrencyPipe, HashLocationStrategy, LocationStrategy } from '@angular/c
     PagesModule,
     AuthModule,
     BrowserAnimationsModule,
+    SocketIoModule.forRoot(config),
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-bottom-right',

@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Router } from '@angular/router';
+import { WebSocketService } from 'src/app/services/web-socket.service';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-register',
@@ -31,11 +33,11 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private usuarioSrv: UsuarioService,
-    private router: Router
+    private router: Router,
+    public webSocketSrv: WebSocketService
   ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
 
   /**
@@ -54,10 +56,8 @@ export class RegisterComponent implements OnInit {
         'success'
         );
       this.isRegister = resp.ok;
+      this.sendNotification(this.registerForm.value);
       this.router.navigate(['/']);
-
-      //this.usuarioSrv.sendEmailNewUserService(this.registerForm.value)
-
 
     }).catch( err =>{
       console.error(err);
@@ -67,7 +67,6 @@ export class RegisterComponent implements OnInit {
     if (this.isRegister) this.usuarioSrv.sendEmailNewUserService(this.registerForm.value, 'newUserEmail');
 
   }
-
 
 
   /**
@@ -108,7 +107,6 @@ export class RegisterComponent implements OnInit {
 
 
   public passwordsIguales(pass1Name:string, pass2Name:string){
-
     return ( formGroup: FormGroup ) =>{
       const pass1Control = formGroup.get(pass1Name);
       const pass2Control = formGroup.get(pass2Name);
@@ -120,6 +118,21 @@ export class RegisterComponent implements OnInit {
         pass2Control.setErrors({ noEsIgual: true });
       }
     }
+  }
+
+
+
+  sendNotification(payload?:any) {
+    const json = {
+      id: uuid.v4().split('-')[0],
+      tipo: 'NEW_USER',
+      idAdmin: 1,
+      nombre: payload.nombre,
+      titulo: 'Nuevo usuario registrado!',
+      desp: `${payload.nombre} creó una cuenta en YUME. Pendiente de revisión.`,
+      fecha: new Date().toISOString()
+    }
+    this.webSocketSrv.emitEvent('notification', json);
   }
 
 

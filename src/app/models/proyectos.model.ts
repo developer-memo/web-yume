@@ -1,11 +1,11 @@
 
 
 export enum TypeProjects {
-  app_mobile = 'APP_MOBILE',
-  web_pages = 'WEB_PAGES',
-  portofio = 'PORTFOLIO',
+  app_mobile    = 'APP_MOBILE',
+  web_pages     = 'WEB_PAGES',
+  portofio      = 'PORTFOLIO',
   landing_pages = 'LANDING_PAGES',
-  platform = 'PLATFORM'
+  platform      = 'PLATFORM'
 }
 
 export type TypeProjectsMap = {

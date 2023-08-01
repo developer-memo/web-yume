@@ -60,6 +60,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     //Cargar las graficas
     setTimeout(() => { this.cargarGraficas() }, 1000);
 
+    this.getAllIngresosById(this.usuario.id);
+
   }
 
 
@@ -124,8 +126,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
    */
   public cargarGraficas = () =>{
     this.lblGrafica1 = ['Clientes', 'Créditos', 'Pagos'];
-    this.Data1 = [ [this.clientes.length, this.creditos.length, this.pagos.length] ];
-    this.getAllIngresosById(this.usuario.id);
+    this.Data1 = [ [this.clientes.length || 0, this.creditos.length || 0, this.pagos.length || 0] ];
+
   }
 
 
