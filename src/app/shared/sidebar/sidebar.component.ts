@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { WebSocketService } from 'src/app/services/web-socket.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -9,7 +10,7 @@ import Swal from 'sweetalert2';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, AfterViewInit {
 
   dataInfoUser:User;
   mediaqueryList = window.matchMedia("(max-width: 768px)");
@@ -18,6 +19,7 @@ export class SidebarComponent implements OnInit {
   constructor(
     private authSrv: AuthService,
     private sharedSrv: SharedService,
+    public webSocketSrv: WebSocketService,
     ) { }
 
   ngOnInit(): void {
@@ -27,6 +29,10 @@ export class SidebarComponent implements OnInit {
         this.btnMenu = html;
       })
     }
+  }
+
+  ngAfterViewInit(): void {
+
   }
 
 

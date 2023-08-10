@@ -45,14 +45,14 @@
             class="has-arrow waves-effect waves-dark"
             routerLink="/"
             (click)="closeMenu()"
-            ><i class="mdi mdi-gauge"></i
-            ><span class="hide-menu"
-              >Dashboard
-              <span class="label label-rouded label-themecolor pull-right"
-                >2</span
-              ></span
-            ></a
-          >
+            >
+            <i class="mdi mdi-gauge"></i>
+            <span class="hide-menu">Dashboard
+              <span class="label label-rouded label-themecolor pull-right" *ngIf="webSocketSrv.acountNoti>0">
+                {{webSocketSrv.acountNoti}}
+              </span>
+            </span>
+          </a>
         </li>
         <li>
           <a

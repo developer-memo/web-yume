@@ -7,6 +7,7 @@ import { Socket } from 'ngx-socket-io';
 export class WebSocketService {
 
   socketStatus: boolean = false;
+  acountNoti:number;
 
   constructor(
     private socket: Socket
@@ -33,6 +34,10 @@ export class WebSocketService {
   }
 
   listenEvent(event:string) {
+    return this.socket.fromEvent(event);
+  }
+
+  getEventPrivate(event:string) {
     return this.socket.fromEvent(event);
   }
 

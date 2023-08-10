@@ -30,11 +30,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     this.usuario = this.authServ.usuario[0];
     await this.getNotifications();
 
-    this.notiSubcrip = this.webSocketSrv.listenEvent('new-notification').subscribe( (msg:any) =>{
-
-      console.log('NEW NOTIFICATION ', msg);
-      this.notifications.unshift(msg);
-    });
+    this.listenNotificationsAdmin('new-notification');
+    this.listenNotificationsAdmin('new-reminder');
 
   }
 
@@ -55,7 +52,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
           desp: item.descrip_noti,
           fecha: item.fecha_noti
         }
-        this.notifications.unshift(json)
+        this.notifications.unshift(json);
+        this.webSocketSrv.acountNoti = this.notifications.length;
       });
     }).catch( err => console.log(err));
   }
@@ -64,13 +62,25 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   delNotificationById(id:string) {
     this.notificaSrv.deleteNotificationsService(id, 'one').subscribe( resp =>{
       this.notifications = this.notifications.filter( noti => noti.id != id);
+      this.webSocketSrv.acountNoti = this.notifications.length;
     }, err => console.error(err))
   }
 
   delAllNotifications() {
     this.notificaSrv.deleteNotificationsService(this.usuario.id, 'all').subscribe( resp =>{
       this.notifications = [];
+      this.webSocketSrv.acountNoti = this.notifications.length;
     }, err => console.error(err))
+  }
+
+
+  listenNotificationsAdmin(event:string) {
+    this.notiSubcrip = this.webSocketSrv.listenEvent(event).subscribe( (msg:any) =>{
+      if (this.usuario.id == 1 && (msg.tipo == 'NEW_USER' || msg.tipo == 'PAY')) {
+        this.notifications.unshift(msg);
+        this.webSocketSrv.acountNoti = this.notifications.length;
+      }
+    });
   }
 
 }
